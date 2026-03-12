@@ -301,7 +301,7 @@ tr.highlight td { background: rgba(245,191,58,0.04); }
 <!-- NAV -->
 <div class="nav-tabs">
   <div class="nav-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</div>
-  <div class="nav-tab" data-tab="firms" onclick="switchTab('firms')">Firm Profiles <span class="tab-count">12</span></div>
+  <div class="nav-tab" data-tab="firms" onclick="switchTab('firms')">Firm Profiles <span class="tab-count">19</span></div>
   <div class="nav-tab" data-tab="funds" onclick="switchTab('funds')">Funds & Returns</div>
   <div class="nav-tab" data-tab="deals" onclick="switchTab('deals')">Deal Scoreboard</div>
   <div class="nav-tab" data-tab="portfolio" onclick="switchTab('portfolio')">Portfolio & Deals</div>
@@ -336,7 +336,7 @@ tr.highlight td { background: rgba(245,191,58,0.04); }
     </div>
     <div class="kpi-card">
       <div class="kpi-label">Competitors Tracked</div>
-      <div class="kpi-value" style="color:var(--pamlico-teal);">12</div>
+      <div class="kpi-value" style="color:var(--pamlico-teal);">19</div>
       <div class="kpi-sub">Lower-Mid-Market PE Peers</div>
     </div>
     <div class="kpi-card">
@@ -452,7 +452,7 @@ tr.highlight td { background: rgba(245,191,58,0.04); }
 
 <!-- ==================== FIRM PROFILES TAB ==================== -->
 <div class="tab-content" id="tab-firms">
-  <div class="section-title">Firm Profiles <span class="badge">12 Competitors</span></div>
+  <div class="section-title">Firm Profiles <span class="badge">19 Competitors</span></div>
   <div class="filter-bar">
     <span style="font-size:12px;color:var(--text-dim);margin-right:8px;">Filter:</span>
     <div class="filter-pill active" onclick="filterFirms('all',this)">All</div>
@@ -655,6 +655,126 @@ tr.highlight td { background: rgba(245,191,58,0.04); }
         <div class="stat-item"><div class="stat-label">AUM</div><div class="stat-value">$40B+</div></div>
         <div class="stat-item"><div class="stat-label">Fund XIII</div><div class="stat-value">$12.5B</div></div>
         <div class="stat-item"><div class="stat-label">Investments</div><div class="stat-value">875+</div></div>
+      </div>
+    </div>
+
+    <!-- CATEGORY: Bulge Bracket / Large-Cap Trackers -->
+    <div style="grid-column: 1 / -1; padding-top: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border-subtle); margin: 12px 0 8px 0;">
+      <div style="font-size: 14px; font-weight: 600; color: var(--text-primary); letter-spacing: 0.5px;">BULGE BRACKET / LARGE-CAP TRACKERS</div>
+    </div>
+
+    <!-- Clearlake Capital -->
+    <div class="card" data-sectors="software tech industrials">
+      <div class="card-header">
+        <div class="card-name"><div class="firm-logo" style="background:linear-gradient(135deg,#1F2937,#4B5563);">CL</div>Clearlake Capital</div>
+        <div class="card-tag">Mega-Fund</div>
+      </div>
+      <div class="card-meta">Santa Monica, CA &bull; Founded 2006 &bull; $90B+ AUM</div>
+      <p style="font-size:13px;color:var(--text-dim);margin-bottom:12px;">Major software and technology investor with diversified portfolio. Acquiring Pathway to reach $185B+ combined AUM. Targets $200M–$2B+ checks. Broad sector exposure: software, technology, industrials. Increased competition for larger Pamlico targets.</p>
+      <div class="card-stats">
+        <div class="stat-item"><div class="stat-label">AUM</div><div class="stat-value">$90B+</div></div>
+        <div class="stat-item"><div class="stat-label">Latest Fund</div><div class="stat-value">CP VIII</div></div>
+        <div class="stat-item"><div class="stat-label">Check Size</div><div class="stat-value">$200M-$2B+</div></div>
+      </div>
+    </div>
+
+    <!-- CATEGORY: Additional LMM Competitors -->
+    <div style="grid-column: 1 / -1; padding-top: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border-subtle); margin: 12px 0 8px 0;">
+      <div style="font-size: 14px; font-weight: 600; color: var(--text-primary); letter-spacing: 0.5px;">ADDITIONAL LOWER-MID-MARKET COMPETITORS</div>
+    </div>
+
+    <!-- LLR Partners -->
+    <div class="card" data-sectors="software healthcare fintech">
+      <div class="card-header">
+        <div class="card-name"><div class="firm-logo" style="background:linear-gradient(135deg,#2E5090,#4A7BA7);">LLR</div>LLR Partners</div>
+        <div class="card-tag">Growth Equity</div>
+      </div>
+      <div class="card-meta">Philadelphia, PA &bull; Founded 1999 &bull; $7.5B+ AUM</div>
+      <p style="font-size:13px;color:var(--text-dim);margin-bottom:12px;">Diversified lower-mid-market PE firm. Fund VII active. Focus on software, healthcare, fintech, education, and security sectors. $10M–$200M check size provides substantial overlap with Pamlico's deal pipeline. Regional East Coast presence.</p>
+      <div class="card-stats">
+        <div class="stat-item"><div class="stat-label">AUM</div><div class="stat-value">$7.5B+</div></div>
+        <div class="stat-item"><div class="stat-label">Fund VII</div><div class="stat-value">Latest</div></div>
+        <div class="stat-item"><div class="stat-label">Check Size</div><div class="stat-value">$10-200M</div></div>
+      </div>
+    </div>
+
+    <!-- PSG Equity -->
+    <div class="card" data-sectors="software">
+      <div class="card-header">
+        <div class="card-name"><div class="firm-logo" style="background:linear-gradient(135deg,#1e3a8a,#3b82f6);">PSG</div>PSG Equity</div>
+        <div class="card-tag">Software Specialist</div>
+      </div>
+      <div class="card-meta">Boston, MA &bull; Founded 2014 &bull; $16B+ AUM</div>
+      <p style="font-size:13px;color:var(--text-dim);margin-bottom:12px;">Dedicated software PE investor with platform and add-on strategy. Fund V deployed. $50M–$500M checks. Exclusive software sector focus with strong operational add-on capability. Direct competitor on vertical SaaS opportunities.</p>
+      <div class="card-stats">
+        <div class="stat-item"><div class="stat-label">AUM</div><div class="stat-value">$16B+</div></div>
+        <div class="stat-item"><div class="stat-label">Fund V</div><div class="stat-value">Active</div></div>
+        <div class="stat-item"><div class="stat-label">Check Size</div><div class="stat-value">$50-500M</div></div>
+      </div>
+    </div>
+
+    <!-- Sverica Capital -->
+    <div class="card" data-sectors="healthcare tech">
+      <div class="card-header">
+        <div class="card-name"><div class="firm-logo" style="background:linear-gradient(135deg,#7C3AED,#A855F7);">SV</div>Sverica Capital</div>
+        <div class="card-tag">Niche LMM</div>
+      </div>
+      <div class="card-meta">San Francisco, CA &bull; Founded 2005 &bull; ~$2B AUM</div>
+      <p style="font-size:13px;color:var(--text-dim);margin-bottom:12px;">Focused lower-mid-market investor in healthcare, industrial, and technology. Fund VI active. $20M–$75M sweet spot. Smaller AUM but focused strategy on lower valuations and operational value creation.</p>
+      <div class="card-stats">
+        <div class="stat-item"><div class="stat-label">AUM</div><div class="stat-value">~$2B</div></div>
+        <div class="stat-item"><div class="stat-label">Fund VI</div><div class="stat-value">Active</div></div>
+        <div class="stat-item"><div class="stat-label">Check Size</div><div class="stat-value">$20-75M</div></div>
+      </div>
+    </div>
+
+    <!-- CATEGORY: International / Vertical Market Specialists -->
+    <div style="grid-column: 1 / -1; padding-top: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border-subtle); margin: 12px 0 8px 0;">
+      <div style="font-size: 14px; font-weight: 600; color: var(--text-primary); letter-spacing: 0.5px;">INTERNATIONAL & VERTICAL MARKET SPECIALISTS</div>
+    </div>
+
+    <!-- Hg Capital -->
+    <div class="card" data-sectors="software services">
+      <div class="card-header">
+        <div class="card-name"><div class="firm-logo" style="background:linear-gradient(135deg,#0f766e,#14b8a6);">HG</div>Hg Capital</div>
+        <div class="card-tag">Europe's #1</div>
+      </div>
+      <div class="card-meta">London, UK &bull; Founded 1985 &bull; $75B+ AUM</div>
+      <p style="font-size:13px;color:var(--text-dim);margin-bottom:12px;">Europe's leading software-focused PE firm. Genesis 10 and Mercury 4 funds active. $20M–$2B+ check size. Positioned above Pamlico in scale but strong competitor on larger software platform deals. Significant portfolio of 200+ platform investments.</p>
+      <div class="card-stats">
+        <div class="stat-item"><div class="stat-label">AUM</div><div class="stat-value">$75B+</div></div>
+        <div class="stat-item"><div class="stat-label">Latest Funds</div><div class="stat-value">Genesis 10</div></div>
+        <div class="stat-item"><div class="stat-label">Check Size</div><div class="stat-value">$20M-$2B+</div></div>
+      </div>
+    </div>
+
+    <!-- Valsoft -->
+    <div class="card" data-sectors="software">
+      <div class="card-header">
+        <div class="card-name"><div class="firm-logo" style="background:linear-gradient(135deg,#9333ea,#a855f7);">VS</div>Valsoft</div>
+        <div class="card-tag">VMS Roll-Up</div>
+      </div>
+      <div class="card-meta">Montreal, Canada &bull; Founded 2015 &bull; Serial Acquirer</div>
+      <p style="font-size:13px;color:var(--text-dim);margin-bottom:12px;">Vertical market software serial acquirer with 130+ acquisitions. Buy-and-hold VMS strategy. $2M–$50M checks. Global reach. Pamlico rarely competes directly but similar operational focus on niche software consolidation.</p>
+      <div class="card-stats">
+        <div class="stat-item"><div class="stat-label">Acquisitions</div><div class="stat-value">130+</div></div>
+        <div class="stat-item"><div class="stat-label">Check Size</div><div class="stat-value">$2-50M</div></div>
+        <div class="stat-item"><div class="stat-label">Strategy</div><div class="stat-value" style="font-size:14px">Buy-Hold VMS</div></div>
+      </div>
+    </div>
+
+    <!-- Constellation Software / Volaris -->
+    <div class="card" data-sectors="software">
+      <div class="card-header">
+        <div class="card-name"><div class="firm-logo" style="background:linear-gradient(135deg,#065f46,#10b981);">CSI</div>Constellation Software</div>
+        <div class="card-tag">Mega-Aggregator</div>
+      </div>
+      <div class="card-meta">Toronto, Canada &bull; Founded 1995 &bull; $70B+ Market Cap</div>
+      <p style="font-size:13px;color:var(--text-dim);margin-bottom:12px;">Permanent capital vertical market software acquirer. Volaris is acquisition arm. 240+ acquisitions. Public company (ticker: CSU). Never sells assets. Pamlico rarely competes but represents ultimate VMS roll-up model.</p>
+      <div class="card-stats">
+        <div class="stat-item"><div class="stat-label">Market Cap</div><div class="stat-value">$70B+</div></div>
+        <div class="stat-item"><div class="stat-label">Acquisitions</div><div class="stat-value">240+</div></div>
+        <div class="stat-item"><div class="stat-label">Strategy</div><div class="stat-value" style="font-size:14px">Permanent Hold</div></div>
       </div>
     </div>
   </div>
@@ -1086,12 +1206,40 @@ tr.highlight td { background: rgba(245,191,58,0.04); }
     <table>
       <thead><tr><th onclick="sortTable('pamlico-table',0)">Company Name</th><th onclick="sortTable('pamlico-table',1)">Sector</th><th>Entry Year</th><th>Exit Year</th><th>Exit Type</th><th>Est. Entry EV</th><th>Est. Exit EV</th><th>MOIC</th><th>IRR</th><th>Status</th></tr></thead>
       <tbody id="pamlico-table">
-        <tr><td>HelioCampus</td><td><span class="sector-tag software">EdTech</span></td><td>2019</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Active (PC V)</td></tr>
-        <tr><td>ClarisHealth</td><td><span class="sector-tag healthcare">Healthcare IT</span></td><td>2021</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Active (PC V)</td></tr>
+        <tr><td>CalcFocus</td><td><span class="sector-tag software">Insurance Software</span></td><td>2026</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Active (PC VI)</td></tr>
         <tr><td>AVANT Communications</td><td><span class="sector-tag comms">Comms/IT</span></td><td>2021</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Active (PC V)</td></tr>
-        <tr><td>symplr</td><td><span class="sector-tag healthcare">Healthcare IT</span></td><td>2017</td><td>2020</td><td>Strategic</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Exited (to Clearlake)</td></tr>
-        <tr><td>Service Express</td><td><span class="sector-tag tech">IT Services</span></td><td>2018</td><td>2022</td><td>Secondary</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Exited (to Harvest Partners)</td></tr>
-        <tr><td>10th Magnitude</td><td><span class="sector-tag tech">Cloud IT</span></td><td>2017</td><td>2020</td><td>Strategic</td><td>—</td><td>$300M+</td><td>—</td><td>—</td><td>Exited (to Cognizant)</td></tr>
+        <tr><td>goHappy</td><td><span class="sector-tag software">HR Tech/SaaS</span></td><td>2025</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Active (PC VI)</td></tr>
+        <tr><td>InsTech</td><td><span class="sector-tag software">InsurTech</span></td><td>2025</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Active (PC VI)</td></tr>
+        <tr><td>EHS Insight</td><td><span class="sector-tag software">EH&S Software</span></td><td>2025</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Active (PC VI)</td></tr>
+        <tr><td>Key Data</td><td><span class="sector-tag software">Data/Analytics</span></td><td>2024</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Active (PC V/VI)</td></tr>
+        <tr><td>HelioCampus</td><td><span class="sector-tag software">EdTech</span></td><td>2019</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Active (PC V)</td></tr>
+        <tr><td>ClarisHealth</td><td><span class="sector-tag healthcare">Healthcare IT</span></td><td>2023</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Active (PC V)</td></tr>
+        <tr><td>Beck Technology</td><td><span class="sector-tag software">Construction Tech</span></td><td>2023</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Active (PC V)</td></tr>
+        <tr><td>YPTC</td><td><span class="sector-tag" style="background:#4a6fa5">Tech-Enabled Svcs</span></td><td>2023</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Active (PC V)</td></tr>
+        <tr><td>InRule Technology</td><td><span class="sector-tag software">AI/Automation</span></td><td>2022</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Active (PC V)</td></tr>
+        <tr><td>SpendHQ</td><td><span class="sector-tag software">Procurement SaaS</span></td><td>2022</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Active (PC V)</td></tr>
+        <tr><td>Profisee</td><td><span class="sector-tag software">Data Mgmt/MDM</span></td><td>2021</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Active (PC V)</td></tr>
+        <tr><td>Protera</td><td><span class="sector-tag" style="background:#4a6fa5">Cloud/SAP Services</span></td><td>2020</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Active (PC V)</td></tr>
+        <tr><td>T2 Systems</td><td><span class="sector-tag software">Parking Tech</span></td><td>2019</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Active (PC V)</td></tr>
+        <tr><td>Winsight</td><td><span class="sector-tag" style="background:#8B6914">Media/Events</span></td><td>2017</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Active (PC IV)</td></tr>
+        <tr><td>Personify</td><td><span class="sector-tag software">Nonprofit SaaS</span></td><td>2018</td><td>2026</td><td>Strategic</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Exited</td></tr>
+        <tr><td>Silverline</td><td><span class="sector-tag" style="background:#4a6fa5">Salesforce Svcs</span></td><td>2018</td><td>2023</td><td>Strategic</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Exited (→Mphasis)</td></tr>
+        <tr><td>Vexus Fiber</td><td><span class="sector-tag comms">Broadband</span></td><td>2018</td><td>2025</td><td>Strategic</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Exited</td></tr>
+        <tr><td>World 50</td><td><span class="sector-tag" style="background:#6B4C9A">Bus Svcs</span></td><td>2019</td><td>2024</td><td>Strategic</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Exited</td></tr>
+        <tr><td>Service Express</td><td><span class="sector-tag" style="background:#4a6fa5">IT Services</span></td><td>2015</td><td>2019</td><td>Secondary</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Exited (→Harvest)</td></tr>
+        <tr><td>10th Magnitude</td><td><span class="sector-tag" style="background:#4a6fa5">Cloud IT</span></td><td>2016</td><td>2020</td><td>Strategic</td><td>—</td><td>$300M+</td><td>—</td><td>—</td><td>Exited (→Cognizant)</td></tr>
+        <tr><td>symplr</td><td><span class="sector-tag healthcare">Healthcare IT</span></td><td>2017</td><td>2020</td><td>Strategic</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Exited</td></tr>
+        <tr><td>Vast Broadband</td><td><span class="sector-tag comms">Broadband</span></td><td>2014</td><td>2021</td><td>Strategic</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Exited (→GI Partners)</td></tr>
+        <tr><td>CLEARLINK</td><td><span class="sector-tag software">MarTech/CustAcq</span></td><td>2013</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Exited</td></tr>
+        <tr><td>Daxko</td><td><span class="sector-tag software">Fitness/SaaS</span></td><td>2014</td><td>2016</td><td>Strategic</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Exited (→GI Partners)</td></tr>
+        <tr><td>Dexter & Chaney</td><td><span class="sector-tag software">Construction SW</span></td><td>2014</td><td>2019</td><td>Strategic</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Exited (→Viewpoint)</td></tr>
+        <tr><td>Veson Nautical</td><td><span class="sector-tag software">Maritime SW</span></td><td>2017</td><td>2024</td><td>Secondary</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Exited (→Francisco)</td></tr>
+        <tr><td>ATX Networks</td><td><span class="sector-tag comms">Cable Equip</span></td><td>2010</td><td>2015</td><td>Strategic</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Exited (→H.I.G.)</td></tr>
+        <tr><td>Lightower Fiber</td><td><span class="sector-tag comms">Fiber/Telecom</span></td><td>2007</td><td>2017</td><td>Strategic</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Exited (→Crown Castle)</td></tr>
+        <tr><td>MetaMetrics</td><td><span class="sector-tag software">EdTech/Analytics</span></td><td>2011</td><td>2018</td><td>Strategic</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Exited</td></tr>
+        <tr><td>Secure-24</td><td><span class="sector-tag" style="background:#4a6fa5">Managed Hosting</span></td><td>2012</td><td>2017</td><td>Strategic</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Exited (→NTT)</td></tr>
+        <tr><td>TMW Systems</td><td><span class="sector-tag software">Transport SW</span></td><td>2005</td><td>2012</td><td>Strategic</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Exited (→Trimble)</td></tr>
+        <tr><td>Wilcon</td><td><span class="sector-tag" style="background:#4a6fa5">IT Services</span></td><td>2006</td><td>2011</td><td>Strategic</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Exited</td></tr>
       </tbody>
     </table>
     </div>
