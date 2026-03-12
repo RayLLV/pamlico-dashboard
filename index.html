@@ -1,0 +1,2045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pamlico Capital — Competitive Intelligence Dashboard</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+:root {
+  --pamlico-dark: #0D3543;
+  --pamlico-teal: #1FA0D5;
+  --pamlico-gold: #F5BF3A;
+  --pamlico-cream: #F1F0EC;
+  --navy: #091E2A;
+  --dark-blue: #0C2636;
+  --mid-blue: #133448;
+  --accent: #1FA0D5;
+  --accent-hover: #1789B8;
+  --green: #10b981;
+  --amber: #f59e0b;
+  --red: #ef4444;
+  --text: #E8EDF2;
+  --text-dim: #8DA4B8;
+  --border: #1A4258;
+  --card-bg: #0E2838;
+  --highlight: #164E6A;
+  --wave-blue: #069DD9;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', 'Proxima Nova', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, sans-serif;
+  background: var(--navy);
+  color: var(--text);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* HEADER */
+.header {
+  background: linear-gradient(135deg, var(--pamlico-dark), var(--dark-blue));
+  border-bottom: 2px solid var(--pamlico-teal);
+  padding: 18px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.header-left { display: flex; align-items: center; gap: 16px; }
+.logo-mark {
+  width: 48px; height: 48px; position: relative; display: flex; align-items: center; justify-content: center;
+}
+.logo-mark svg { width: 48px; height: 48px; }
+.header h1 { font-size: 21px; font-weight: 700; letter-spacing: -0.3px; color: var(--pamlico-cream); }
+.header .subtitle { font-size: 12px; color: var(--text-dim); margin-top: 2px; font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; }
+.header-right { display: flex; align-items: center; gap: 16px; }
+.last-updated { font-size: 11px; color: var(--text-dim); }
+.search-wrap { position: relative; }
+.search-box {
+  background: var(--navy); border: 1px solid var(--border);
+  border-radius: 8px; padding: 9px 14px 9px 36px; color: var(--text);
+  font-size: 13px; width: 260px; outline: none; font-family: inherit;
+}
+.search-box:focus { border-color: var(--pamlico-teal); box-shadow: 0 0 0 2px rgba(31,160,213,0.15); }
+.search-icon { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--text-dim); }
+.search-results-dropdown {
+  display: none; position: absolute; top: 100%; left: 0; right: 0; margin-top: 4px;
+  background: var(--dark-blue); border: 1px solid var(--border); border-radius: 10px;
+  max-height: 360px; overflow-y: auto; z-index: 100; box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+.search-results-dropdown.active { display: block; }
+.search-result-item {
+  padding: 10px 14px; cursor: pointer; border-bottom: 1px solid rgba(26,66,88,0.5);
+  font-size: 13px; display: flex; flex-direction: column; gap: 2px;
+}
+.search-result-item:hover { background: rgba(31,160,213,0.08); }
+.search-result-item:last-child { border-bottom: none; }
+.search-result-tab { font-size: 10px; color: var(--pamlico-teal); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.search-result-text { color: var(--text); }
+.search-result-text mark { background: rgba(245,191,58,0.25); color: var(--pamlico-gold); border-radius: 2px; padding: 0 2px; }
+.search-no-results { padding: 16px; text-align: center; color: var(--text-dim); font-size: 13px; }
+
+/* NAV TABS */
+.nav-tabs {
+  display: flex; gap: 0; background: var(--dark-blue);
+  border-bottom: 1px solid var(--border); padding: 0 32px;
+  overflow-x: auto;
+}
+.nav-tab {
+  padding: 13px 18px; font-size: 12px; font-weight: 600;
+  color: var(--text-dim); cursor: pointer; border-bottom: 2px solid transparent;
+  transition: all 0.2s; white-space: nowrap; user-select: none; text-transform: uppercase; letter-spacing: 0.3px;
+}
+.nav-tab:hover { color: var(--text); background: rgba(31,160,213,0.05); }
+.nav-tab.active { color: var(--pamlico-teal); border-bottom-color: var(--pamlico-teal); }
+.nav-tab .tab-count {
+  display: inline-block; background: rgba(31,160,213,0.15); color: var(--pamlico-teal);
+  font-size: 10px; padding: 1px 6px; border-radius: 10px; margin-left: 6px; font-weight: 700;
+}
+
+/* MAIN CONTENT */
+.main { padding: 24px 32px; max-width: 1600px; margin: 0 auto; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* SECTION HEADERS */
+.section-title {
+  font-size: 17px; font-weight: 700; margin-bottom: 16px;
+  display: flex; align-items: center; gap: 10px; color: var(--pamlico-cream);
+}
+.section-title .badge {
+  background: var(--pamlico-teal); font-size: 10px; padding: 2px 10px;
+  border-radius: 20px; font-weight: 600; color: white;
+}
+
+/* CARDS */
+.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 16px; margin-bottom: 28px; }
+.card {
+  background: var(--card-bg); border: 1px solid var(--border);
+  border-radius: 12px; padding: 20px; transition: all 0.2s;
+}
+.card:hover { border-color: var(--pamlico-teal); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,0.2); }
+.card.pamlico-card { border-left: 3px solid var(--pamlico-gold); background: linear-gradient(135deg, var(--card-bg), rgba(245,191,58,0.03)); }
+.card-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px; }
+.card-name { font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+.card-tag {
+  font-size: 10px; padding: 3px 10px; border-radius: 20px;
+  font-weight: 600; background: rgba(31,160,213,0.15); color: var(--pamlico-teal);
+}
+.card-tag.gold { background: rgba(245,191,58,0.15); color: var(--pamlico-gold); }
+.card-tag.red { background: rgba(239,68,68,0.15); color: var(--red); }
+.card-tag.green { background: rgba(16,185,129,0.15); color: var(--green); }
+.card-meta { font-size: 12px; color: var(--text-dim); margin-bottom: 10px; }
+.card-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 14px; }
+.stat-item { }
+.stat-label { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+.stat-value { font-size: 18px; font-weight: 700; color: var(--text); }
+.stat-value.green { color: var(--green); }
+
+/* FIRM LOGO */
+.firm-logo {
+  width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 11px; flex-shrink: 0; color: white; letter-spacing: -0.5px;
+}
+
+/* TABLES */
+.table-wrap {
+  background: var(--card-bg); border: 1px solid var(--border);
+  border-radius: 12px; overflow: hidden; margin-bottom: 28px;
+}
+.table-title {
+  padding: 16px 20px; font-weight: 700; font-size: 15px;
+  border-bottom: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center; color: var(--pamlico-cream);
+}
+table { width: 100%; border-collapse: collapse; }
+th {
+  text-align: left; padding: 12px 16px; font-size: 10px;
+  text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-dim);
+  background: rgba(0,0,0,0.2); border-bottom: 1px solid var(--border);
+  font-weight: 700; position: sticky; top: 0; cursor: pointer;
+}
+th:hover { color: var(--pamlico-teal); }
+th::after { content: ' ↕'; font-size: 9px; opacity: 0.4; }
+td {
+  padding: 11px 16px; font-size: 13px; border-bottom: 1px solid rgba(26,66,88,0.4);
+}
+tr:hover td { background: rgba(31,160,213,0.03); }
+tr.highlight td { background: rgba(245,191,58,0.04); }
+.firm-name-cell { font-weight: 600; display: flex; align-items: center; gap: 10px; }
+
+/* KPI ROW */
+.kpi-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-bottom: 28px; }
+.kpi-card {
+  background: var(--card-bg); border: 1px solid var(--border);
+  border-radius: 12px; padding: 18px 20px; text-align: center;
+}
+.kpi-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-dim); margin-bottom: 6px; font-weight: 600; }
+.kpi-value { font-size: 28px; font-weight: 800; }
+.kpi-sub { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
+
+/* TIMELINE */
+.timeline { position: relative; margin: 20px 0 20px 20px; padding-left: 24px; border-left: 2px solid var(--border); }
+.timeline-item { margin-bottom: 20px; position: relative; }
+.timeline-item::before {
+  content: ''; position: absolute; left: -30px; top: 6px;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--pamlico-teal); border: 2px solid var(--navy);
+}
+.timeline-year { font-size: 12px; font-weight: 700; color: var(--pamlico-teal); margin-bottom: 4px; }
+.timeline-text { font-size: 13px; color: var(--text); }
+
+/* FILTER BAR */
+.filter-bar {
+  display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; align-items: center;
+}
+.filter-pill {
+  padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 600;
+  cursor: pointer; border: 1px solid var(--border); background: transparent;
+  color: var(--text-dim); transition: all 0.2s; user-select: none;
+}
+.filter-pill:hover, .filter-pill.active {
+  background: var(--pamlico-teal); color: white; border-color: var(--pamlico-teal);
+}
+
+/* COMPARISON BAR CHART */
+.bar-chart { margin: 16px 0; }
+.bar-row { display: flex; align-items: center; margin-bottom: 8px; gap: 12px; }
+.bar-label { width: 140px; font-size: 12px; font-weight: 600; text-align: right; flex-shrink: 0; }
+.bar-track { flex: 1; height: 30px; background: rgba(255,255,255,0.03); border-radius: 6px; overflow: hidden; position: relative; }
+.bar-fill {
+  height: 100%; border-radius: 6px; display: flex; align-items: center;
+  padding-left: 10px; font-size: 11px; font-weight: 700; transition: width 0.6s ease;
+  min-width: fit-content;
+}
+.bar-fill.pamlico { background: linear-gradient(90deg, var(--pamlico-gold), #D4A020); color: var(--navy); }
+.bar-fill.comp { background: linear-gradient(90deg, var(--pamlico-teal), #1678A0); color: white; }
+
+/* SCROLLABLE TABLE */
+.scroll-table { max-height: 520px; overflow-y: auto; }
+.scroll-table::-webkit-scrollbar { width: 6px; }
+.scroll-table::-webkit-scrollbar-track { background: var(--dark-blue); }
+.scroll-table::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* SECTOR TAGS */
+.sector-tag {
+  display: inline-block; font-size: 10px; padding: 2px 8px; border-radius: 4px;
+  margin: 1px 2px; font-weight: 600;
+}
+.sector-tag.software { background: rgba(99,102,241,0.2); color: #818cf8; }
+.sector-tag.healthcare { background: rgba(16,185,129,0.2); color: #34d399; }
+.sector-tag.services { background: rgba(245,158,11,0.2); color: #fbbf24; }
+.sector-tag.tech { background: rgba(59,130,246,0.2); color: #60a5fa; }
+.sector-tag.comms { background: rgba(236,72,153,0.2); color: #f472b6; }
+.sector-tag.info { background: rgba(168,85,247,0.2); color: #c084fc; }
+.sector-tag.fintech { background: rgba(20,184,166,0.2); color: #2dd4bf; }
+.sector-tag.industrial { background: rgba(156,163,175,0.2); color: #d1d5db; }
+
+/* DEAL SCOREBOARD */
+.deal-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; margin-bottom: 24px; }
+.deal-card {
+  background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 16px;
+}
+.deal-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.deal-firm { font-weight: 700; font-size: 14px; display: flex; align-items: center; gap: 8px; }
+.deal-metrics { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.deal-metric { }
+.deal-metric-label { font-size: 9px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+.deal-metric-value { font-size: 15px; font-weight: 700; }
+.deal-bar { height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; margin-top: 12px; overflow: hidden; }
+.deal-bar-fill { height: 100%; border-radius: 2px; }
+.exit-pipeline { margin-top: 10px; }
+.exit-item { display: flex; align-items: center; gap: 8px; padding: 6px 0; font-size: 12px; border-bottom: 1px solid rgba(26,66,88,0.3); }
+.exit-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+/* FOOTER */
+.footer {
+  text-align: center; padding: 20px 32px; font-size: 11px; color: var(--text-dim);
+  border-top: 1px solid var(--border); margin-top: 24px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1200px) { .kpi-row { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 768px) {
+  .card-grid, .deal-grid { grid-template-columns: 1fr; }
+  .kpi-row { grid-template-columns: repeat(2, 1fr); }
+  .header { flex-direction: column; gap: 12px; }
+  .main { padding: 16px; }
+  .search-box { width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<div id="dashboardContent">
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <div class="logo-mark">
+      <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="48" height="48" rx="10" fill="#0D3543"/>
+        <path d="M8 30 Q16 22, 24 30 Q32 38, 40 30" stroke="#069DD9" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <text x="24" y="25" text-anchor="middle" fill="#F1F0EC" font-family="Inter,Helvetica,sans-serif" font-weight="800" font-size="14">PC</text>
+      </svg>
+    </div>
+    <div>
+      <h1>Pamlico Capital — Competitive Intelligence</h1>
+      <div class="subtitle">Lower-Mid-Market PE Landscape &bull; Go Further, Enjoy the Journey</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <span class="last-updated">Updated: <span id="updateDate">March 11, 2026</span></span>
+    <div class="search-wrap">
+      <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="text" class="search-box" placeholder="Search firms, deals, people..." id="globalSearch" oninput="handleSearch(this.value)" onfocus="if(this.value)handleSearch(this.value)" autocomplete="off">
+      <div class="search-results-dropdown" id="searchDropdown"></div>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav-tabs">
+  <div class="nav-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</div>
+  <div class="nav-tab" data-tab="firms" onclick="switchTab('firms')">Firm Profiles <span class="tab-count">12</span></div>
+  <div class="nav-tab" data-tab="funds" onclick="switchTab('funds')">Funds & Returns</div>
+  <div class="nav-tab" data-tab="deals" onclick="switchTab('deals')">Deal Scoreboard</div>
+  <div class="nav-tab" data-tab="portfolio" onclick="switchTab('portfolio')">Portfolio & Deals</div>
+  <div class="nav-tab" data-tab="teams" onclick="switchTab('teams')">Teams & Leadership</div>
+  <div class="nav-tab" data-tab="advisors" onclick="switchTab('advisors')">Advisors & Relationships</div>
+  <div class="nav-tab" data-tab="history" onclick="switchTab('history')">History & Milestones</div>
+  <div class="nav-tab" data-tab="news" onclick="switchTab('news')">News & Intel</div>
+  <div class="nav-tab" data-tab="strategy" onclick="switchTab('strategy')">Strategic Analysis</div>
+  <div class="nav-tab" data-tab="sources" onclick="switchTab('sources')">Sources</div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- ==================== OVERVIEW TAB ==================== -->
+<div class="tab-content active" id="tab-overview">
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="kpi-label">Pamlico AUM</div>
+      <div class="kpi-value" style="color:var(--pamlico-gold);">$6.5B+</div>
+      <div class="kpi-sub">6 Funds Since 1988</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Latest Fund</div>
+      <div class="kpi-value" style="color:var(--green);">$1.75B</div>
+      <div class="kpi-sub">PC VI &bull; Closed 2025 at Hard Cap</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Platform Investments</div>
+      <div class="kpi-value">135+</div>
+      <div class="kpi-sub">220+ Add-Ons &bull; $4.0B+ Invested</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Competitors Tracked</div>
+      <div class="kpi-value" style="color:var(--pamlico-teal);">12</div>
+      <div class="kpi-sub">Lower-Mid-Market PE Peers</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Equity Check</div>
+      <div class="kpi-value">$50-200M</div>
+      <div class="kpi-sub">$10-150M Revenue Companies</div>
+    </div>
+  </div>
+
+  <div class="section-title">AUM Comparison <span class="badge">$ Billions</span></div>
+  <div class="bar-chart" id="aumChart">
+    <div class="bar-row"><div class="bar-label">Thoma Bravo</div><div class="bar-track"><div class="bar-fill comp" style="width:100%">$183B+</div></div></div>
+    <div class="bar-row"><div class="bar-label">Vista Equity</div><div class="bar-track"><div class="bar-fill comp" style="width:58.5%">$107B+</div></div></div>
+    <div class="bar-row"><div class="bar-label">Insight Partners</div><div class="bar-track"><div class="bar-fill comp" style="width:49.2%">$90B+</div></div></div>
+    <div class="bar-row"><div class="bar-label">Audax Group</div><div class="bar-track"><div class="bar-fill comp" style="width:21.3%">$39B</div></div></div>
+    <div class="bar-row"><div class="bar-label">K1 Investment</div><div class="bar-track"><div class="bar-fill comp" style="width:10.8%">$19.7B</div></div></div>
+    <div class="bar-row"><div class="bar-label">Accel-KKR</div><div class="bar-track"><div class="bar-fill comp" style="width:10.4%">$19B+</div></div></div>
+    <div class="bar-row"><div class="bar-label">Great Hill</div><div class="bar-track"><div class="bar-fill comp" style="width:10.4%">$19B+</div></div></div>
+    <div class="bar-row"><div class="bar-label">Riverside Co.</div><div class="bar-track"><div class="bar-fill comp" style="width:7.7%">$14.1B</div></div></div>
+    <div class="bar-row"><div class="bar-label">HGGC</div><div class="bar-track"><div class="bar-fill comp" style="width:5.5%">$10B+</div></div></div>
+    <div class="bar-row"><div class="bar-label">JMI Equity</div><div class="bar-track"><div class="bar-fill comp" style="width:6%">$11B+</div></div></div>
+    <div class="bar-row"><div class="bar-label" style="color:var(--pamlico-gold)">Pamlico Capital</div><div class="bar-track"><div class="bar-fill pamlico" style="width:3.6%">$6.5B+</div></div></div>
+    <div class="bar-row"><div class="bar-label">Mainsail</div><div class="bar-track"><div class="bar-fill comp" style="width:2.2%">$4B</div></div></div>
+    <div class="bar-row"><div class="bar-label">Frontier Growth</div><div class="bar-track"><div class="bar-fill comp" style="width:1.1%">~$2B+</div></div></div>
+  </div>
+
+  <div class="section-title">Competitive Snapshot</div>
+  <div class="table-wrap">
+    <div class="scroll-table">
+    <table id="overviewTable">
+      <thead>
+        <tr>
+          <th onclick="sortTable('overviewTable',0)">Firm</th>
+          <th onclick="sortTable('overviewTable',1)">Founded</th>
+          <th onclick="sortTable('overviewTable',2)">HQ</th>
+          <th onclick="sortTable('overviewTable',3)">AUM</th>
+          <th onclick="sortTable('overviewTable',4)">Latest Fund</th>
+          <th onclick="sortTable('overviewTable',5)">Check Size</th>
+          <th onclick="sortTable('overviewTable',6)">Primary Sectors</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="highlight">
+          <td><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#0D3543,#1A5E73);">PC</div>Pamlico Capital</div></td>
+          <td>1988</td><td>Charlotte, NC</td><td>$6.5B+</td><td>PC VI — $1.75B (2025)</td><td>$50–200M</td>
+          <td><span class="sector-tag software">Software</span><span class="sector-tag healthcare">Healthcare IT</span><span class="sector-tag comms">Comms</span><span class="sector-tag tech">Tech Svcs</span></td>
+        </tr>
+        <tr>
+          <td><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#1E3A8A,#3B82F6);">FG</div>Frontier Growth</div></td>
+          <td>1999</td><td>Charlotte, NC</td><td>~$2B+</td><td>Fund V</td><td>$5-30M</td>
+          <td><span class="sector-tag software">Vertical SaaS</span><span class="sector-tag healthcare">HealthTech</span></td>
+        </tr>
+        <tr>
+          <td><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#4338CA,#7C3AED);">AK</div>Accel-KKR</div></td>
+          <td>2000</td><td>Menlo Park, CA</td><td>$19B</td><td>Fund VII — $4.4B + Emerging Buyout II $920M</td><td>$25–500M</td>
+          <td><span class="sector-tag software">Software</span><span class="sector-tag tech">Tech Svcs</span></td>
+        </tr>
+        <tr>
+          <td><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#065F46,#10B981);">JMI</div>JMI Equity</div></td>
+          <td>1992</td><td>Baltimore / San Diego</td><td>$11B</td><td>Fund XII — $3.1B (August 2025)</td><td>$25-250M</td>
+          <td><span class="sector-tag software">Software</span><span class="sector-tag tech">AI/Cloud</span></td>
+        </tr>
+        <tr>
+          <td><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#7C2D12,#EA580C);">RC</div>Riverside Company</div></td>
+          <td>1988</td><td>Cleveland / NYC</td><td>$14.1B</td><td>Fund VI — $1.6B</td><td>$10–400M</td>
+          <td><span class="sector-tag services">Bus Svcs</span><span class="sector-tag healthcare">Healthcare</span><span class="sector-tag software">Software</span></td>
+        </tr>
+        <tr>
+          <td><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#1E40AF,#3B82F6);">AX</div>Audax Group</div></td>
+          <td>1999</td><td>Boston, MA</td><td>~$39B (PE + Debt + Strategic)</td><td>$5.25B (2023)</td><td>$25–250M</td>
+          <td><span class="sector-tag services">Bus Svcs</span><span class="sector-tag healthcare">Healthcare</span><span class="sector-tag tech">Tech</span></td>
+        </tr>
+        <tr>
+          <td><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#0F766E,#14B8A6);">HG</div>HGGC</div></td>
+          <td>2007</td><td>Palo Alto, CA</td><td>$10B+</td><td>Fund IV — $2.54B</td><td>$100–500M</td>
+          <td><span class="sector-tag tech">Tech</span><span class="sector-tag services">Services</span><span class="sector-tag fintech">FinTech</span></td>
+        </tr>
+        <tr>
+          <td><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#9333EA,#A855F7);">K1</div>K1 Investment</div></td>
+          <td>2011</td><td>Manhattan Beach, CA</td><td>$19.7B</td><td>K6 — $6.25B target</td><td>$25–300M</td>
+          <td><span class="sector-tag software">Enterprise SW</span></td>
+        </tr>
+        <tr>
+          <td><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#0369A1,#0EA5E9);">VE</div>Vista Equity</div></td>
+          <td>2000</td><td>Austin / SF</td><td>$100B+</td><td>Fund VIII — $17.9B</td><td>$100M–2B+</td>
+          <td><span class="sector-tag software">Enterprise SW</span><span class="sector-tag tech">Data/Tech</span></td>
+        </tr>
+        <tr>
+          <td><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#B91C1C,#EF4444);">TB</div>Thoma Bravo</div></td>
+          <td>1980</td><td>Chicago / SF / Miami</td><td>$183B+</td><td>Fund XVI — $24.3B</td><td>$50M–5B+</td>
+          <td><span class="sector-tag software">Software</span><span class="sector-tag fintech">FinTech</span><span class="sector-tag healthcare">HealthTech</span></td>
+        </tr>
+        <tr>
+          <td><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#4C1D95,#7C3AED);">GH</div>Great Hill Partners</div></td>
+          <td>1998</td><td>Boston / London</td><td>$19B</td><td>Fund IX — $7B (September 2025)</td><td>$100M–500M+</td>
+          <td><span class="sector-tag software">Software</span><span class="sector-tag fintech">FinTech</span><span class="sector-tag healthcare">HealthTech</span></td>
+        </tr>
+        <tr>
+          <td><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#0E7490,#22D3EE);">MS</div>Mainsail Partners</div></td>
+          <td>2003</td><td>Austin / SF</td><td>$4B</td><td>$1.535B (Fund VII, 2025)</td><td>$10–100M</td>
+          <td><span class="sector-tag software">B2B Software</span><span class="sector-tag tech">Tech Svcs</span></td>
+        </tr>
+        <tr>
+          <td><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#C2410C,#F97316);">IP</div>Insight Partners</div></td>
+          <td>1995</td><td>New York, NY</td><td>$90B+</td><td>Fund XIII — $12.5B</td><td>$10M–1B+</td>
+          <td><span class="sector-tag software">Software</span><span class="sector-tag tech">Data/AI</span></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== FIRM PROFILES TAB ==================== -->
+<div class="tab-content" id="tab-firms">
+  <div class="section-title">Firm Profiles <span class="badge">12 Competitors</span></div>
+  <div class="filter-bar">
+    <span style="font-size:12px;color:var(--text-dim);margin-right:8px;">Filter:</span>
+    <div class="filter-pill active" onclick="filterFirms('all',this)">All</div>
+    <div class="filter-pill" onclick="filterFirms('software',this)">Software</div>
+    <div class="filter-pill" onclick="filterFirms('healthcare',this)">Healthcare</div>
+    <div class="filter-pill" onclick="filterFirms('services',this)">Services</div>
+    <div class="filter-pill" onclick="filterFirms('fintech',this)">FinTech</div>
+  </div>
+
+  <div class="card-grid" id="firmCards">
+    <!-- Pamlico -->
+    <div class="card pamlico-card" data-sectors="software healthcare services comms tech">
+      <div class="card-header">
+        <div class="card-name"><div class="firm-logo" style="background:linear-gradient(135deg,#0D3543,#1A5E73);">PC</div>Pamlico Capital</div>
+        <div class="card-tag gold">Subject Firm</div>
+      </div>
+      <div class="card-meta">Charlotte, NC &bull; Founded 1988 &bull; ~51 employees &bull; 14 Partners</div>
+      <p style="font-size:13px;color:var(--text-dim);margin-bottom:12px;">Originally First Union Capital Partners, spun out from Wells Fargo in 2010. Control-oriented growth equity and buyout investments of $50M–$200M in communications, healthcare IT, information services, software, and tech-enabled services. Five consecutive GrowthCap Top PE Firm awards. Founded 1988 in Charlotte.</p>
+      <div class="card-stats">
+        <div class="stat-item"><div class="stat-label">AUM</div><div class="stat-value">$6.5B+</div></div>
+        <div class="stat-item"><div class="stat-label">Latest Fund</div><div class="stat-value">$1.75B</div></div>
+        <div class="stat-item"><div class="stat-label">Platforms</div><div class="stat-value">135+</div></div>
+      </div>
+    </div>
+
+    <!-- Frontier Growth -->
+    <div class="card" data-sectors="software healthcare">
+      <div class="card-header">
+        <div class="card-name"><div class="firm-logo" style="background:linear-gradient(135deg,#1E3A8A,#3B82F6);">FG</div>Frontier Growth</div>
+        <div class="card-tag red">Closest Peer</div>
+      </div>
+      <div class="card-meta">Charlotte, NC &bull; Founded 1999 &bull; Vertical SaaS specialist</div>
+      <p style="font-size:13px;color:var(--text-dim);margin-bottom:12px;">Charlotte-adjacent growth equity firm focused on vertical SaaS and tech-enabled services. Highest comparability to Pamlico given SE US base, similar sector focus, and lower-mid-market positioning. Notable portfolio includes Applied Systems, Avalara (pre-IPO), Passport Labs.</p>
+      <div class="card-stats">
+        <div class="stat-item"><div class="stat-label">AUM</div><div class="stat-value">~$1B</div></div>
+        <div class="stat-item"><div class="stat-label">Investments</div><div class="stat-value">50+</div></div>
+        <div class="stat-item"><div class="stat-label">Check Size</div><div class="stat-value">$10-50M</div></div>
+      </div>
+    </div>
+
+    <!-- Accel-KKR -->
+    <div class="card" data-sectors="software tech">
+      <div class="card-header">
+        <div class="card-name"><div class="firm-logo" style="background:linear-gradient(135deg,#4338CA,#7C3AED);">AK</div>Accel-KKR</div>
+        <div class="card-tag">Software Specialist</div>
+      </div>
+      <div class="card-meta">Menlo Park, CA &bull; Founded 2000 &bull; Exclusive tech/SW focus</div>
+      <p style="font-size:13px;color:var(--text-dim);margin-bottom:12px;">Technology-focused providing buyout capital, growth investments, and credit to middle-market software businesses. Raised $2.2B Strategic Capital fund for secondary investments. Competes directly on software deals in Pamlico's size range.</p>
+      <div class="card-stats">
+        <div class="stat-item"><div class="stat-label">Capital Committed</div><div class="stat-value">$19B</div></div>
+        <div class="stat-item"><div class="stat-label">Investments</div><div class="stat-value">580+</div></div>
+        <div class="stat-item"><div class="stat-label">Focus</div><div class="stat-value" style="font-size:14px">Software</div></div>
+      </div>
+    </div>
+
+    <!-- JMI Equity -->
+    <div class="card" data-sectors="software tech">
+      <div class="card-header">
+        <div class="card-name"><div class="firm-logo" style="background:linear-gradient(135deg,#065F46,#10B981);">JMI</div>JMI Equity</div>
+        <div class="card-tag">Growth Equity</div>
+      </div>
+      <div class="card-meta">Baltimore / San Diego &bull; Founded 1992 &bull; Software & AI focus</div>
+      <p style="font-size:13px;color:var(--text-dim);margin-bottom:12px;">Leading growth equity software investor. $25M–$250M investments, often providing first institutional capital. 19 IPOs facilitated. Portfolio represents $10B combined revenue, $84B aggregate enterprise value. Significant overlap with Pamlico's software pipeline.</p>
+      <div class="card-stats">
+        <div class="stat-item"><div class="stat-label">Total Commitments</div><div class="stat-value">$11B</div></div>
+        <div class="stat-item"><div class="stat-label">Fund XII</div><div class="stat-value">$3.1B</div></div>
+        <div class="stat-item"><div class="stat-label">Exits / IPOs</div><div class="stat-value">120+ / 19</div></div>
+      </div>
+    </div>
+
+    <!-- Riverside Company -->
+    <div class="card" data-sectors="services healthcare software">
+      <div class="card-header">
+        <div class="card-name"><div class="firm-logo" style="background:linear-gradient(135deg,#7C2D12,#EA580C);">RC</div>Riverside Company</div>
+        <div class="card-tag">Global LMM</div>
+      </div>
+      <div class="card-meta">Cleveland / NYC / Amsterdam &bull; Founded 1988 &bull; 332 investments globally</div>
+      <p style="font-size:13px;color:var(--text-dim);margin-bottom:12px;">Global private equity firm investing in lower middle market. 300+ investments. Focus on businesses up to $400M EV. Overlaps with Pamlico on healthcare services and tech-enabled services. Same vintage year as Pamlico (1988).</p>
+      <div class="card-stats">
+        <div class="stat-item"><div class="stat-label">AUM</div><div class="stat-value">$5B+</div></div>
+        <div class="stat-item"><div class="stat-label">Investments</div><div class="stat-value">300+</div></div>
+        <div class="stat-item"><div class="stat-label">Global Offices</div><div class="stat-value" style="font-size:14px">15+</div></div>
+      </div>
+    </div>
+
+    <!-- Audax Group -->
+    <div class="card" data-sectors="services healthcare tech">
+      <div class="card-header">
+        <div class="card-name"><div class="firm-logo" style="background:linear-gradient(135deg,#1E40AF,#3B82F6);">AX</div>Audax Group</div>
+        <div class="card-tag">Buy & Build</div>
+      </div>
+      <div class="card-meta">Boston, MA &bull; Founded 1999 &bull; PE + Private Debt platform</div>
+      <p style="font-size:13px;color:var(--text-dim);margin-bottom:12px;">Middle market PE and private debt platform. Known for aggressive buy-and-build strategy with 900+ add-on acquisitions. Overlaps Pamlico on tech-enabled business services and healthcare. Also competes for management buyouts.</p>
+      <div class="card-stats">
+        <div class="stat-item"><div class="stat-label">AUM</div><div class="stat-value">$6B+</div></div>
+        <div class="stat-item"><div class="stat-label">Add-Ons</div><div class="stat-value">1,400+</div></div>
+        <div class="stat-item"><div class="stat-label">Strategy</div><div class="stat-value" style="font-size:14px">Buy & Build</div></div>
+      </div>
+    </div>
+
+    <!-- HGGC -->
+    <div class="card" data-sectors="tech services fintech">
+      <div class="card-header">
+        <div class="card-name"><div class="firm-logo" style="background:linear-gradient(135deg,#0F766E,#14B8A6);">HG</div>HGGC</div>
+        <div class="card-tag">Mid-Market</div>
+      </div>
+      <div class="card-meta">Palo Alto, CA &bull; Founded 2007 &bull; Co-founded by Steve Young</div>
+      <p style="font-size:13px;color:var(--text-dim);margin-bottom:12px;">Middle market PE firm focused on technology, services, and financial services. Co-founded by NFL legend Steve Young. Fund V raised $3.2B and closed February 2026. Targets $100M–$500M EV. Competes with Pamlico on larger tech-enabled service deals and fintech opportunities.</p>
+      <div class="card-stats">
+        <div class="stat-item"><div class="stat-label">AUM</div><div class="stat-value">$7B</div></div>
+        <div class="stat-item"><div class="stat-label">Fund IV — $2.54B</div></div>
+        <div class="stat-item"><div class="stat-label">Focus</div><div class="stat-value" style="font-size:14px">Tech/Svcs</div></div>
+      </div>
+    </div>
+
+    <!-- K1 -->
+    <div class="card" data-sectors="software">
+      <div class="card-header">
+        <div class="card-name"><div class="firm-logo" style="background:linear-gradient(135deg,#9333EA,#A855F7);">K1</div>K1 Investment</div>
+        <div class="card-tag">Enterprise SW</div>
+      </div>
+      <div class="card-meta">Manhattan Beach, CA &bull; Founded 2011 &bull; 266+ investments</div>
+      <p style="font-size:13px;color:var(--text-dim);margin-bottom:12px;">Enterprise software specialist. Rapid fund growth from ~$1.1B to $6.25B target for K6. Extremely high deal velocity. Proprietary value creation playbook. Direct competitor on Pamlico's enterprise software deals.</p>
+      <div class="card-stats">
+        <div class="stat-item"><div class="stat-label">AUM</div><div class="stat-value">$6.3B</div></div>
+        <div class="stat-item"><div class="stat-label">Investments</div><div class="stat-value">~175</div></div>
+        <div class="stat-item"><div class="stat-label">Growth</div><div class="stat-value green" style="font-size:14px">High Growth</div></div>
+      </div>
+    </div>
+
+    <!-- Vista -->
+    <div class="card" data-sectors="software tech">
+      <div class="card-header">
+        <div class="card-name"><div class="firm-logo" style="background:linear-gradient(135deg,#0369A1,#0EA5E9);">VE</div>Vista Equity Partners</div>
+        <div class="card-tag">Mega-Fund</div>
+      </div>
+      <div class="card-meta">Austin / SF &bull; Founded 2000 &bull; Robert F. Smith</div>
+      <p style="font-size:13px;color:var(--text-dim);margin-bottom:12px;">Largest enterprise software-focused PE firm globally. $107B+ AUM. Flagship ($17.9B with ~$21B including parallel), Endeavor (mid-market), and Foundation (growth) funds. Operating platform: Vista Consulting Group (VCG). Competes on larger Pamlico targets. Proprietary VEC operating system drives value creation.</p>
+      <div class="card-stats">
+        <div class="stat-item"><div class="stat-label">AUM</div><div class="stat-value">$100B+</div></div>
+        <div class="stat-item"><div class="stat-label">Portfolio Cos</div><div class="stat-value">90+</div></div>
+        <div class="stat-item"><div class="stat-label">Employees</div><div class="stat-value" style="font-size:14px">600+</div></div>
+      </div>
+    </div>
+
+    <!-- Thoma Bravo -->
+    <div class="card" data-sectors="software fintech healthcare">
+      <div class="card-header">
+        <div class="card-name"><div class="firm-logo" style="background:linear-gradient(135deg,#B91C1C,#EF4444);">TB</div>Thoma Bravo</div>
+        <div class="card-tag">Mega-Fund</div>
+      </div>
+      <div class="card-meta">Chicago / SF / Miami &bull; Founded 1980 (as Golder Thoma) &bull; Orlando Bravo</div>
+      <p style="font-size:13px;color:var(--text-dim);margin-bottom:12px;">One of the largest software-focused PE firms. Founded 1980 as Golder Thoma, Thoma Bravo name from 2008. $183B+ AUM across multiple funds including Discover (mid-market) and Explore (small-cap). Approximately 580+ platform investments. The Discover and Explore funds directly overlap Pamlico's deal range.</p>
+      <div class="card-stats">
+        <div class="stat-item"><div class="stat-label">AUM</div><div class="stat-value">$58B</div></div>
+        <div class="stat-item"><div class="stat-label">Fund XV</div><div class="stat-value">$14.5B</div></div>
+        <div class="stat-item"><div class="stat-label">Investments</div><div class="stat-value">580+</div></div>
+      </div>
+    </div>
+
+    <!-- Great Hill -->
+    <div class="card" data-sectors="software fintech healthcare services">
+      <div class="card-header">
+        <div class="card-name"><div class="firm-logo" style="background:linear-gradient(135deg,#4C1D95,#7C3AED);">GH</div>Great Hill Partners</div>
+        <div class="card-tag">Growth Equity</div>
+      </div>
+      <div class="card-meta">Boston / London &bull; Founded 1998 &bull; $100M-$500M+ investments</div>
+      <p style="font-size:13px;color:var(--text-dim);margin-bottom:12px;">Growth-oriented middle market PE. $19B total capital raised. Recent Fund IX at $7B represents major step-up. Notable exits include Wayfair, ZoomInfo. Overlaps Pamlico on software and healthcare tech opportunities.</p>
+      <div class="card-stats">
+        <div class="stat-item"><div class="stat-label">AUM</div><div class="stat-value">$19B</div></div>
+        <div class="stat-item"><div class="stat-label">Fund IX</div><div class="stat-value">$7B</div></div>
+        <div class="stat-item"><div class="stat-label">Investments</div><div class="stat-value">100+</div></div>
+      </div>
+    </div>
+
+    <!-- Mainsail -->
+    <div class="card" data-sectors="software tech">
+      <div class="card-header">
+        <div class="card-name"><div class="firm-logo" style="background:linear-gradient(135deg,#0E7490,#22D3EE);">MS</div>Mainsail Partners</div>
+        <div class="card-tag">Growth Equity</div>
+      </div>
+      <div class="card-meta">Austin / SF &bull; Founded 2003 &bull; B2B SaaS focused</div>
+      <p style="font-size:13px;color:var(--text-dim);margin-bottom:12px;">Growth equity firm focused on B2B software companies. Targets bootstrapped or capital-efficient businesses, often providing first institutional capital. Directly competes with Pamlico on smaller software platform deals.</p>
+      <div class="card-stats">
+        <div class="stat-item"><div class="stat-label">AUM</div><div class="stat-value">$4B</div></div>
+        <div class="stat-item"><div class="stat-label">Investments</div><div class="stat-value">100+</div></div>
+        <div class="stat-item"><div class="stat-label">Check Size</div><div class="stat-value" style="font-size:14px">$10-100M</div></div>
+      </div>
+    </div>
+
+    <!-- Insight Partners -->
+    <div class="card" data-sectors="software tech">
+      <div class="card-header">
+        <div class="card-name"><div class="firm-logo" style="background:linear-gradient(135deg,#C2410C,#F97316);">IP</div>Insight Partners</div>
+        <div class="card-tag">Mega-Fund</div>
+      </div>
+      <div class="card-meta">New York, NY &bull; Founded 1995 &bull; $40B+ AUM</div>
+      <p style="font-size:13px;color:var(--text-dim);margin-bottom:12px;">Global software investor spanning venture, growth, and buyout. Fund XIII at $12.5B. Proprietary Insight Onsite operating platform with 150+ professionals. Competes across the full Pamlico deal spectrum and up-market.</p>
+      <div class="card-stats">
+        <div class="stat-item"><div class="stat-label">AUM</div><div class="stat-value">$40B+</div></div>
+        <div class="stat-item"><div class="stat-label">Fund XIII</div><div class="stat-value">$12.5B</div></div>
+        <div class="stat-item"><div class="stat-label">Investments</div><div class="stat-value">875+</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== FUNDS & RETURNS TAB ==================== -->
+<div class="tab-content" id="tab-funds">
+  <!-- Comparison selector -->
+  <div class="section-title">Fund Comparison <span class="badge">Select Firms to Compare</span></div>
+  <div class="filter-bar" id="fundCompareBar">
+    <span style="font-size:12px;color:var(--text-dim);margin-right:8px;">Compare:</span>
+    <div class="filter-pill active" onclick="toggleFundCompare('all',this)">All Firms</div>
+    <div class="filter-pill" data-firm="pamlico" onclick="toggleFundCompare('pamlico',this)">Pamlico</div>
+    <div class="filter-pill" data-firm="frontier" onclick="toggleFundCompare('frontier',this)">Frontier Growth</div>
+    <div class="filter-pill" data-firm="accelkkr" onclick="toggleFundCompare('accelkkr',this)">Accel-KKR</div>
+    <div class="filter-pill" data-firm="jmi" onclick="toggleFundCompare('jmi',this)">JMI Equity</div>
+    <div class="filter-pill" data-firm="riverside" onclick="toggleFundCompare('riverside',this)">Riverside</div>
+    <div class="filter-pill" data-firm="audax" onclick="toggleFundCompare('audax',this)">Audax</div>
+    <div class="filter-pill" data-firm="hggc" onclick="toggleFundCompare('hggc',this)">HGGC</div>
+    <div class="filter-pill" data-firm="k1" onclick="toggleFundCompare('k1',this)">K1</div>
+    <div class="filter-pill" data-firm="vista" onclick="toggleFundCompare('vista',this)">Vista</div>
+    <div class="filter-pill" data-firm="thomabravo" onclick="toggleFundCompare('thomabravo',this)">Thoma Bravo</div>
+    <div class="filter-pill" data-firm="greathill" onclick="toggleFundCompare('greathill',this)">Great Hill</div>
+    <div class="filter-pill" data-firm="mainsail" onclick="toggleFundCompare('mainsail',this)">Mainsail</div>
+    <div class="filter-pill" data-firm="insight" onclick="toggleFundCompare('insight',this)">Insight</div>
+  </div>
+
+  <!-- PAMLICO CAPITAL -->
+  <div class="fund-firm-block" data-firm-block="pamlico">
+  <div class="table-wrap" style="border-left:3px solid var(--pamlico-gold);">
+    <div class="table-title"><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#0D3543,#1A5E73);font-size:9px;">PC</div>Pamlico Capital</div><span style="font-size:12px;color:var(--text-dim);">6 Funds &bull; $6.5B+ Total &bull; Founded 1988</span></div>
+    <table>
+      <thead><tr><th>Fund</th><th>Vintage</th><th>Size</th><th># Platforms</th><th>Status</th><th>Active Holdings</th><th>Notable Exits / Holdings</th></tr></thead>
+      <tbody>
+        <tr><td>PC I</td><td>2002</td><td>~$950M</td><td>10+</td><td style="color:var(--text-dim)">&#x2713; Fully Realized</td><td>0</td><td>10th Magnitude, Daxko</td></tr>
+        <tr><td>PC II</td><td>2006</td><td>~$1.1B</td><td>12+</td><td style="color:var(--text-dim)">&#x2713; Fully Realized</td><td>0</td><td>Lightower Fiber Networks, TMW Systems</td></tr>
+        <tr><td>PC III</td><td>2012</td><td>$650M</td><td>14+</td><td style="color:var(--amber)">&#x25CF; Mostly Realized</td><td>1-2</td><td>Secure-24, MetaMetrics</td></tr>
+        <tr><td>PC IV</td><td>2016</td><td>$910M</td><td>15+</td><td style="color:var(--amber)">&#x25CF; Harvesting</td><td>4-6</td><td>symplr (exit to Clearlake), Service Express (exit to Harvest Partners)</td></tr>
+        <tr><td>PC V</td><td>2020</td><td>$1.4B</td><td>12+</td><td style="color:var(--green)">&#x25CF; Actively Investing</td><td>10-12</td><td>HelioCampus, ClarisHealth, AVANT Communications</td></tr>
+        <tr><td><strong>PC VI</strong></td><td>2025</td><td><strong>$1.75B</strong></td><td>Deploying</td><td style="color:var(--pamlico-teal)">&#x25CF; New Fund</td><td>0-2</td><td>Initial deployment underway; 75% step-up from PC V</td></tr>
+      </tbody>
+    </table>
+  </div>
+  </div>
+
+  <!-- FRONTIER GROWTH -->
+  <div class="fund-firm-block" data-firm-block="frontier">
+  <div class="table-wrap">
+    <div class="table-title"><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#1E3A8A,#3B82F6);font-size:9px;">FG</div>Frontier Growth</div><span style="font-size:12px;color:var(--text-dim);">5 Funds &bull; ~$2B+ Total &bull; Charlotte, NC</span></div>
+    <table>
+      <thead><tr><th>Fund</th><th>Vintage</th><th>Size</th><th># Investments</th><th>Status</th><th>Active Holdings</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Fund I</td><td>2003</td><td>~$60M</td><td>8+</td><td style="color:var(--text-dim)">&#x2713; Fully Realized</td><td>0</td><td>Early vertical SaaS investments</td></tr>
+        <tr><td>Fund II</td><td>2007</td><td>~$120M</td><td>10+</td><td style="color:var(--text-dim)">&#x2713; Fully Realized</td><td>0</td><td>Applied Systems investment era</td></tr>
+        <tr><td>Fund III</td><td>2013</td><td>~$200M</td><td>12+</td><td style="color:var(--amber)">&#x25CF; Mostly Realized</td><td>1-2</td><td>Passport Labs, Avalara (pre-IPO era); tail positions</td></tr>
+        <tr><td>Fund IV</td><td>2018</td><td>~$950M</td><td>10+</td><td style="color:var(--green)">&#x25CF; Harvesting/Active</td><td>4-6</td><td>Current vintage with active platform companies</td></tr>
+        <tr><td><strong>Fund V</strong></td><td>2024</td><td><strong>~$350M</strong></td><td>Deploying</td><td style="color:var(--pamlico-teal)">&#x25CF; New Fund</td><td>1-3</td><td>Initial deployment; modest step-up from Fund IV</td></tr>
+      </tbody>
+    </table>
+  </div>
+  </div>
+
+  <!-- ACCEL-KKR -->
+  <div class="fund-firm-block" data-firm-block="accelkkr">
+  <div class="table-wrap">
+    <div class="table-title"><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#4338CA,#7C3AED);font-size:9px;">AK</div>Accel-KKR</div><span style="font-size:12px;color:var(--text-dim);">8+ Funds &bull; $19B Total &bull; Menlo Park, CA</span></div>
+    <table>
+      <thead><tr><th>Fund</th><th>Vintage</th><th>Size</th><th># Investments</th><th>Status</th><th>Active Holdings</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Growth I-III</td><td>2000-10</td><td>~$1.5B cum.</td><td>60+</td><td style="color:var(--text-dim)">&#x2713; Realized</td><td>0</td><td>Early tech buyout/growth funds</td></tr>
+        <tr><td>Buyout IV</td><td>2015</td><td>~$1.4B</td><td>15+</td><td style="color:var(--amber)">&#x25CF; Mostly Realized</td><td>2-3</td><td>Core software buyout fund</td></tr>
+        <tr><td>Buyout V</td><td>2019</td><td>~$1.3B</td><td>12+</td><td style="color:var(--green)">&#x25CF; Active</td><td>8-10</td><td>Mid-deployment; Veriforce, iPipeline era</td></tr>
+        <tr><td>Growth Capital</td><td>2020</td><td>~$700M</td><td>20+</td><td style="color:var(--green)">&#x25CF; Active</td><td>12-15</td><td>Minority growth investments in software</td></tr>
+        <tr><td>Credit Fund</td><td>2021</td><td>~$1.5B</td><td>30+</td><td style="color:var(--green)">&#x25CF; Active</td><td>20+</td><td>Software-focused credit alternatives</td></tr>
+        <tr><td><strong>Strategic Cap</strong></td><td>2024</td><td><strong>$2.2B</strong></td><td>Deploying</td><td style="color:var(--pamlico-teal)">&#x25CF; New Fund</td><td>1-3</td><td>Secondary investments in software; new strategy</td></tr>
+      </tbody>
+    </table>
+  </div>
+  </div>
+
+  <!-- JMI EQUITY -->
+  <div class="fund-firm-block" data-firm-block="jmi">
+  <div class="table-wrap">
+    <div class="table-title"><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#065F46,#10B981);font-size:9px;">JMI</div>JMI Equity</div><span style="font-size:12px;color:var(--text-dim);">12 Funds &bull; $11B Total &bull; Baltimore / San Diego</span></div>
+    <table>
+      <thead><tr><th>Fund</th><th>Vintage</th><th>Size</th><th># Investments</th><th>Status</th><th>Active Holdings</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Funds I-VII</td><td>1992-08</td><td>~$2.5B cum.</td><td>80+</td><td style="color:var(--text-dim)">&#x2713; Realized</td><td>0</td><td>19 IPOs total across early funds</td></tr>
+        <tr><td>Fund VIII</td><td>2011</td><td>~$1.1B</td><td>12+</td><td style="color:var(--text-dim)">&#x2713; Realized</td><td>0</td><td>Software growth equity</td></tr>
+        <tr><td>Fund IX</td><td>2014</td><td>~$800M</td><td>14+</td><td style="color:var(--amber)">&#x25CF; Mostly Realized</td><td>2-3</td><td>Mid-market software focus</td></tr>
+        <tr><td>Fund X</td><td>2018</td><td>$1.8B</td><td>12+</td><td style="color:var(--green)">&#x25CF; Active</td><td>6-8</td><td>Significant step-up; active portfolio management</td></tr>
+        <tr><td>Fund XI</td><td>2023</td><td>$2.4B</td><td>10+</td><td style="color:var(--green)">&#x25CF; Active</td><td>8-10</td><td>AI/Cloud focus; deploying into current vintage</td></tr>
+        <tr><td><strong>Fund XII</strong></td><td>2025</td><td><strong>$3.1B</strong></td><td>Deploying</td><td style="color:var(--pamlico-teal)">&#x25CF; New Fund</td><td>0-2</td><td>Record fund; 41% step-up. Total commitments now $11B+</td></tr>
+      </tbody>
+    </table>
+  </div>
+  </div>
+
+  <!-- RIVERSIDE -->
+  <div class="fund-firm-block" data-firm-block="riverside">
+  <div class="table-wrap">
+    <div class="table-title"><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#7C2D12,#EA580C);font-size:9px;">RC</div>Riverside Company</div><span style="font-size:12px;color:var(--text-dim);">6+ Flagship Funds &bull; $14.1B Total &bull; Cleveland / NYC</span></div>
+    <table>
+      <thead><tr><th>Fund</th><th>Vintage</th><th>Size</th><th># Investments</th><th>Status</th><th>Active Holdings</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Funds I-III</td><td>1988-06</td><td>~$1.5B cum.</td><td>100+</td><td style="color:var(--text-dim)">&#x2713; Realized</td><td>0</td><td>LMM buyouts; global expansion begins</td></tr>
+        <tr><td>Fund IV</td><td>2013</td><td>~$900M</td><td>20+</td><td style="color:var(--amber)">&#x25CF; Mostly Realized</td><td>2-3</td><td>Buy-and-build in services/healthcare</td></tr>
+        <tr><td>Fund V</td><td>2018</td><td>~$1.2B</td><td>15+</td><td style="color:var(--green)">&#x25CF; Active</td><td>8-10</td><td>Active harvesting and add-ons</td></tr>
+        <tr><td><strong>Fund VI</strong></td><td>2023</td><td><strong>$1.6B</strong></td><td>8+</td><td style="color:var(--pamlico-teal)">&#x25CF; Deploying</td><td>5-8</td><td>Current flagship; 33% step-up from Fund V</td></tr>
+        <tr><td>Europe Funds</td><td>Various</td><td>~$1.1B cum.</td><td>40+</td><td style="color:var(--green)">&#x25CF; Various</td><td>10+</td><td>Separate European LMM strategy (Amsterdam-based)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  </div>
+
+  <!-- AUDAX -->
+  <div class="fund-firm-block" data-firm-block="audax">
+  <div class="table-wrap">
+    <div class="table-title"><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#1E40AF,#3B82F6);font-size:9px;">AX</div>Audax Group</div><span style="font-size:12px;color:var(--text-dim);">7+ PE Funds + Debt Funds + Strategic &bull; ~$39B Total &bull; Boston, MA</span></div>
+    <table>
+      <thead><tr><th>Fund</th><th>Vintage</th><th>Size</th><th># Platforms</th><th>Status</th><th>Active Holdings</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>PE Funds I-IV</td><td>1999-12</td><td>~$2B cum.</td><td>40+</td><td style="color:var(--text-dim)">&#x2713; Realized</td><td>0</td><td>Built buy-and-build playbook; 200+ add-ons in early funds</td></tr>
+        <tr><td>PE Fund V</td><td>2016</td><td>$1.7B</td><td>12+</td><td style="color:var(--amber)">&#x25CF; Harvesting</td><td>3-5</td><td>Mature portfolio; executing exits</td></tr>
+        <tr><td>PE Fund VI</td><td>2020</td><td>~$2.0B</td><td>10+</td><td style="color:var(--green)">&#x25CF; Active</td><td>8-10</td><td>150+ add-ons completed in this fund</td></tr>
+        <tr><td><strong>PE Fund VII</strong></td><td>2023</td><td><strong>$5.25B</strong></td><td>Deploying</td><td style="color:var(--pamlico-teal)">&#x25CF; New Fund</td><td>2-4</td><td>Largest PE fund; ~25% step-up from Fund VI</td></tr>
+        <tr><td>Private Debt</td><td>Various</td><td>$3B+ cum.</td><td>100+</td><td style="color:var(--green)">&#x25CF; Ongoing</td><td>60+</td><td>Separate direct lending platform; complements PE strategy</td></tr>
+      </tbody>
+    </table>
+  </div>
+  </div>
+
+  <!-- HGGC -->
+  <div class="fund-firm-block" data-firm-block="hggc">
+  <div class="table-wrap">
+    <div class="table-title"><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#0F766E,#14B8A6);font-size:9px;">HG</div>HGGC</div><span style="font-size:12px;color:var(--text-dim);">5 Funds &bull; $10B+ Total &bull; Palo Alto, CA</span></div>
+    <table>
+      <thead><tr><th>Fund</th><th>Vintage</th><th>Size</th><th># Investments</th><th>Status</th><th>Active Holdings</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Fund I</td><td>2008</td><td>$1.1B</td><td>8+</td><td style="color:var(--text-dim)">&#x2713; Realized</td><td>0</td><td>Inaugural fund; Steve Young co-founder visibility</td></tr>
+        <tr><td>Fund II — $1.3B</td><td>10+</td><td style="color:var(--amber)">&#x25CF; Mostly Realized</td><td>1-2</td><td>AutoAlert, Entrata, Better Being (exit 2025) exits</td></tr>
+        <tr><td>Fund III — $1.85B</td><td>8+</td><td style="color:var(--green)">&#x25CF; Active</td><td>4-6</td><td>Mid-harvest; tech and services platforms</td></tr>
+        <tr><td><strong>Fund IV — $2.54B</strong></td><td>6+</td><td style="color:var(--green)">&#x25CF; Deploying</td><td>4-6</td><td>38% step-up; $100-500M EV targets</td></tr>
+      </tbody>
+    </table>
+  </div>
+  </div>
+
+  <!-- K1 -->
+  <div class="fund-firm-block" data-firm-block="k1">
+  <div class="table-wrap">
+    <div class="table-title"><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#9333EA,#A855F7);font-size:9px;">K1</div>K1 Investment Management</div><span style="font-size:12px;color:var(--text-dim);">6 Funds &bull; $6.3B Total &bull; Manhattan Beach, CA</span></div>
+    <table>
+      <thead><tr><th>Fund</th><th>Vintage</th><th>Size</th><th># Investments</th><th>Status</th><th>Active Holdings</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>K1-K2</td><td>2011-14</td><td>~$350M cum.</td><td>30+</td><td style="color:var(--text-dim)">&#x2713; Realized</td><td>0</td><td>Early enterprise software platform</td></tr>
+        <tr><td>K3</td><td>2017</td><td>$550M</td><td>40+</td><td style="color:var(--amber)">&#x25CF; Harvesting</td><td>5-8</td><td>Rapid deal velocity; high add-on rate</td></tr>
+        <tr><td>K4</td><td>2020</td><td>$2.1B</td><td>50+</td><td style="color:var(--green)">&#x25CF; Active</td><td>25-30</td><td>Major scale-up; 282% increase from K3</td></tr>
+        <tr><td>K5</td><td>2022</td><td>~$3.5B</td><td>30+</td><td style="color:var(--green)">&#x25CF; Active</td><td>20-25</td><td>Continued high-velocity deployment</td></tr>
+        <tr><td><strong>K6</strong></td><td>2025</td><td><strong>$6.25B target</strong></td><td>Deploying</td><td style="color:var(--pamlico-teal)">&#x25CF; Fundraising</td><td>0</td><td>Would be 12x growth from K3 in under a decade</td></tr>
+      </tbody>
+    </table>
+  </div>
+  </div>
+
+  <!-- VISTA -->
+  <div class="fund-firm-block" data-firm-block="vista">
+  <div class="table-wrap">
+    <div class="table-title"><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#0369A1,#0EA5E9);font-size:9px;">VE</div>Vista Equity Partners</div><span style="font-size:12px;color:var(--text-dim);">3 Fund Series &bull; $100B+ Total &bull; Austin / SF</span></div>
+    <table>
+      <thead><tr><th>Fund Series</th><th>Latest Vintage</th><th>Latest Size</th><th>Cumulative Inv.</th><th>Status</th><th>Active Holdings</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Flagship I-VII</td><td>2000-20</td><td>$6B-$11B range</td><td>50+ platforms</td><td style="color:var(--amber)">&#x25CF; Various</td><td>20-30</td><td>Large-cap software buyouts ($500M-5B+ EV)</td></tr>
+        <tr><td><strong>Flagship VIII</strong></td><td>2024</td><td><strong>$17.9B</strong></td><td>Deploying</td><td style="color:var(--pamlico-teal)">&#x25CF; New</td><td>3-5</td><td>With ~$21B including parallel funds; operating platform: Vista Consulting Group (VCG)</td></tr>
+        <tr><td>Endeavor I-III</td><td>2023</td><td>~$3.5B latest</td><td>30+ platforms</td><td style="color:var(--green)">&#x25CF; Active</td><td>15-20</td><td>Mid-market ($200M-1B EV); overlaps Pamlico upper range</td></tr>
+        <tr><td>Foundation I-III</td><td>2022</td><td>~$1B latest</td><td>40+ deals</td><td style="color:var(--green)">&#x25CF; Active</td><td>20+</td><td>Growth equity; directly competes with Pamlico at lower end</td></tr>
+        <tr><td>Perennial</td><td>2023</td><td>$1.5B</td><td>10+</td><td style="color:var(--green)">&#x25CF; Active</td><td>8-10</td><td>Permanent capital vehicle for long-hold assets</td></tr>
+      </tbody>
+    </table>
+  </div>
+  </div>
+
+  <!-- THOMA BRAVO -->
+  <div class="fund-firm-block" data-firm-block="thomabravo">
+  <div class="table-wrap">
+    <div class="table-title"><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#B91C1C,#EF4444);font-size:9px;">TB</div>Thoma Bravo</div><span style="font-size:12px;color:var(--text-dim);">3 Fund Series &bull; $58B Total &bull; Chicago / SF / Miami</span></div>
+    <table>
+      <thead><tr><th>Fund Series</th><th>Latest Vintage</th><th>Latest Size</th><th>Cumulative</th><th>Status</th><th>Active Holdings</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Flagship XI-XIV</td><td>2013-22</td><td>$9-12.5B range</td><td>80+ platforms</td><td style="color:var(--amber)">&#x25CF; Harvesting</td><td>30-40</td><td>Zendesk ($10.2B), SolarWinds (re-priv.); mega-cap SW buyouts</td></tr>
+        <tr><td><strong>Flagship XV</strong></td><td>2024</td><td><strong>$14.5B</strong></td><td>Deploying</td><td style="color:var(--pamlico-teal)">&#x25CF; New</td><td>2-4</td><td>Record flagship fund; continued scale-up</td></tr>
+        <tr><td>Discover I-III</td><td>2022</td><td>~$3B latest</td><td>40+ deals</td><td style="color:var(--green)">&#x25CF; Active</td><td>15-20</td><td>Mid-market ($500M-2B EV); overlaps Pamlico's upper end</td></tr>
+        <tr><td><strong>Explore I-II</strong></td><td>2023</td><td><strong>~$1.5B</strong></td><td>20+ deals</td><td style="color:var(--green)">&#x25CF; Active</td><td>10-15</td><td><strong style="color:var(--red)">Direct Pamlico overlap!</strong> Small-cap $100-500M EV targets</td></tr>
+      </tbody>
+    </table>
+  </div>
+  </div>
+
+  <!-- GREAT HILL -->
+  <div class="fund-firm-block" data-firm-block="greathill">
+  <div class="table-wrap">
+    <div class="table-title"><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#4C1D95,#7C3AED);font-size:9px;">GH</div>Great Hill Partners</div><span style="font-size:12px;color:var(--text-dim);">9 Funds &bull; $19B Total &bull; Boston / London</span></div>
+    <table>
+      <thead><tr><th>Fund</th><th>Vintage</th><th>Size</th><th># Investments</th><th>Status</th><th>Active Holdings</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Funds I-V</td><td>1998-10</td><td>~$3B cum.</td><td>40+</td><td style="color:var(--text-dim)">&#x2713; Realized</td><td>0</td><td>Wayfair (Fund III), ZoomInfo (Fund VI); legendary exits</td></tr>
+        <tr><td>Fund VI</td><td>2015</td><td>$1.5B</td><td>10+</td><td style="color:var(--amber)">&#x25CF; Mostly Realized</td><td>2-3</td><td>ZoomInfo (acquired DiscoverOrg → IPO at $16B+)</td></tr>
+        <tr><td>Fund VII</td><td>2019</td><td>$3.5B</td><td>10+</td><td style="color:var(--green)">&#x25CF; Active</td><td>6-8</td><td>RealPage ($10.2B take-private) era; 133% step-up</td></tr>
+        <tr><td>Fund VIII</td><td>2022</td><td>~$4.5B</td><td>8+</td><td style="color:var(--green)">&#x25CF; Active</td><td>6-8</td><td>Continued scaling into upper-mid-market</td></tr>
+        <tr><td><strong>Fund IX</strong></td><td>2024</td><td><strong>$7.0B</strong></td><td>Deploying</td><td style="color:var(--pamlico-teal)">&#x25CF; New Fund</td><td>1-3</td><td>Exceeded $5B target by 40%; now upper-mid/large-cap</td></tr>
+      </tbody>
+    </table>
+  </div>
+  </div>
+
+  <!-- MAINSAIL -->
+  <div class="fund-firm-block" data-firm-block="mainsail">
+  <div class="table-wrap">
+    <div class="table-title"><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#0E7490,#22D3EE);font-size:9px;">MS</div>Mainsail Partners</div><span style="font-size:12px;color:var(--text-dim);">5 Funds &bull; $4B Total &bull; Austin / SF</span></div>
+    <table>
+      <thead><tr><th>Fund</th><th>Vintage</th><th>Size</th><th># Investments</th><th>Status</th><th>Active Holdings</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Funds I-II</td><td>2003-08</td><td>~$400M cum.</td><td>20+</td><td style="color:var(--text-dim)">&#x2713; Realized</td><td>0</td><td>Pioneered growth equity for bootstrapped B2B SaaS</td></tr>
+        <tr><td>Fund III</td><td>2014</td><td>~$450M</td><td>15+</td><td style="color:var(--amber)">&#x25CF; Mostly Realized</td><td>2-3</td><td>First institutional capital provider focus</td></tr>
+        <tr><td>Fund IV</td><td>2019</td><td>~$600M</td><td>12+</td><td style="color:var(--green)">&#x25CF; Active</td><td>6-8</td><td>$10-50M equity checks in B2B software</td></tr>
+        <tr><td><strong>Fund V</strong></td><td>2023</td><td><strong>~$750M</strong></td><td>6+</td><td style="color:var(--green)">&#x25CF; Deploying</td><td>4-6</td><td>25% step-up; continued B2B SaaS focus</td></tr>
+      </tbody>
+    </table>
+  </div>
+  </div>
+
+  <!-- INSIGHT -->
+  <div class="fund-firm-block" data-firm-block="insight">
+  <div class="table-wrap">
+    <div class="table-title"><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#C2410C,#F97316);font-size:9px;">IP</div>Insight Partners</div><span style="font-size:12px;color:var(--text-dim);">13 Flagship + Opportunity Funds &bull; $40B+ Total &bull; New York</span></div>
+    <table>
+      <thead><tr><th>Fund</th><th>Vintage</th><th>Size</th><th># Investments</th><th>Status</th><th>Active Holdings</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Funds I-IX</td><td>1995-16</td><td>~$15B cum.</td><td>400+</td><td style="color:var(--text-dim)">&#x2713; Mostly Realized</td><td>10-15</td><td>Venture/growth hybrid model; 800+ total investments</td></tr>
+        <tr><td>Fund X</td><td>2018</td><td>$6.3B</td><td>50+</td><td style="color:var(--green)">&#x25CF; Active</td><td>20-30</td><td>Started including buyout-scale deals</td></tr>
+        <tr><td>Fund XI</td><td>2020</td><td>$9.5B</td><td>60+</td><td style="color:var(--green)">&#x25CF; Active</td><td>30-40</td><td>Peak vintage; LogMeIn ($4.3B) era</td></tr>
+        <tr><td>Fund XII</td><td>2022</td><td>~$10B</td><td>30+</td><td style="color:var(--green)">&#x25CF; Active</td><td>25-30</td><td>Deploying into more selective opportunities</td></tr>
+        <tr><td><strong>Fund XIII</strong></td><td>2024</td><td><strong>$12.5B</strong></td><td>Deploying</td><td style="color:var(--pamlico-teal)">&#x25CF; New Fund</td><td>3-5</td><td>32% step-up; Onsite team of 150+ for value creation</td></tr>
+      </tbody>
+    </table>
+  </div>
+  </div>
+
+</div>
+
+<!-- ==================== DEAL SCOREBOARD TAB ==================== -->
+<div class="tab-content" id="tab-deals">
+  <div class="section-title">Deal Scoreboard <span class="badge">Competitor Activity</span></div>
+  <p style="font-size:13px;color:var(--text-dim);margin-bottom:20px;">Estimated deal velocity, portfolio size, and upcoming exit potential across the competitive set. Based on public filings, news, and industry intelligence.</p>
+
+  <div class="deal-grid">
+    <!-- Pamlico -->
+    <div class="deal-card" style="border-left:3px solid var(--pamlico-gold);">
+      <div class="deal-card-header">
+        <div class="deal-firm"><div class="firm-logo" style="background:linear-gradient(135deg,#0D3543,#1A5E73);width:28px;height:28px;font-size:9px;">PC</div>Pamlico Capital</div>
+        <div class="card-tag gold">Subject</div>
+      </div>
+      <div class="deal-metrics">
+        <div class="deal-metric"><div class="deal-metric-label">Active Portfolio</div><div class="deal-metric-value" style="color:var(--pamlico-gold)">25+</div></div>
+        <div class="deal-metric"><div class="deal-metric-label">Avg Hold Period</div><div class="deal-metric-value">4.5 yrs</div></div>
+        <div class="deal-metric"><div class="deal-metric-label">Add-Ons (Lifetime)</div><div class="deal-metric-value">220+</div></div>
+        <div class="deal-metric"><div class="deal-metric-label">Deals/Year</div><div class="deal-metric-value">3-5</div></div>
+      </div>
+      <div class="deal-bar"><div class="deal-bar-fill" style="width:55%;background:var(--pamlico-gold);"></div></div>
+    </div>
+
+    <!-- Vista -->
+    <div class="deal-card">
+      <div class="deal-card-header">
+        <div class="deal-firm"><div class="firm-logo" style="background:linear-gradient(135deg,#0369A1,#0EA5E9);width:28px;height:28px;font-size:9px;">VE</div>Vista Equity</div>
+        <div class="card-tag">Mega-Fund</div>
+      </div>
+      <div class="deal-metrics">
+        <div class="deal-metric"><div class="deal-metric-label">Active Portfolio</div><div class="deal-metric-value">90+</div></div>
+        <div class="deal-metric"><div class="deal-metric-label">Avg Hold Period</div><div class="deal-metric-value">5-7 yrs</div></div>
+        <div class="deal-metric"><div class="deal-metric-label">Notable IRR</div><div class="deal-metric-value green">22%+ net</div></div>
+        <div class="deal-metric"><div class="deal-metric-label">Deals/Year</div><div class="deal-metric-value">8-12</div></div>
+      </div>
+      <div class="deal-bar"><div class="deal-bar-fill" style="width:90%;background:var(--pamlico-teal);"></div></div>
+    </div>
+
+    <!-- Thoma Bravo -->
+    <div class="deal-card">
+      <div class="deal-card-header">
+        <div class="deal-firm"><div class="firm-logo" style="background:linear-gradient(135deg,#B91C1C,#EF4444);width:28px;height:28px;font-size:9px;">TB</div>Thoma Bravo</div>
+        <div class="card-tag">Mega-Fund</div>
+      </div>
+      <div class="deal-metrics">
+        <div class="deal-metric"><div class="deal-metric-label">Active Portfolio</div><div class="deal-metric-value">80+</div></div>
+        <div class="deal-metric"><div class="deal-metric-label">Avg Hold Period</div><div class="deal-metric-value">4-6 yrs</div></div>
+        <div class="deal-metric"><div class="deal-metric-label">Notable IRR</div><div class="deal-metric-value green">25%+ net</div></div>
+        <div class="deal-metric"><div class="deal-metric-label">Deals/Year</div><div class="deal-metric-value">15-20</div></div>
+      </div>
+      <div class="deal-bar"><div class="deal-bar-fill" style="width:95%;background:var(--red);"></div></div>
+    </div>
+
+    <!-- K1 -->
+    <div class="deal-card">
+      <div class="deal-card-header">
+        <div class="deal-firm"><div class="firm-logo" style="background:linear-gradient(135deg,#9333EA,#A855F7);width:28px;height:28px;font-size:9px;">K1</div>K1 Investment</div>
+        <div class="card-tag">High Velocity</div>
+      </div>
+      <div class="deal-metrics">
+        <div class="deal-metric"><div class="deal-metric-label">Active Portfolio</div><div class="deal-metric-value">50+</div></div>
+        <div class="deal-metric"><div class="deal-metric-label">Avg Hold Period</div><div class="deal-metric-value">3-5 yrs</div></div>
+        <div class="deal-metric"><div class="deal-metric-label">Cumulative Deals</div><div class="deal-metric-value">266+</div></div>
+        <div class="deal-metric"><div class="deal-metric-label">Deals/Year</div><div class="deal-metric-value">20-25</div></div>
+      </div>
+      <div class="deal-bar"><div class="deal-bar-fill" style="width:85%;background:#A855F7;"></div></div>
+    </div>
+
+    <!-- Accel-KKR -->
+    <div class="deal-card">
+      <div class="deal-card-header">
+        <div class="deal-firm"><div class="firm-logo" style="background:linear-gradient(135deg,#4338CA,#7C3AED);width:28px;height:28px;font-size:9px;">AK</div>Accel-KKR</div>
+        <div class="card-tag">Software</div>
+      </div>
+      <div class="deal-metrics">
+        <div class="deal-metric"><div class="deal-metric-label">Active Portfolio</div><div class="deal-metric-value">40+</div></div>
+        <div class="deal-metric"><div class="deal-metric-label">Avg Hold Period</div><div class="deal-metric-value">4-6 yrs</div></div>
+        <div class="deal-metric"><div class="deal-metric-label">Cumulative Deals</div><div class="deal-metric-value">450+</div></div>
+        <div class="deal-metric"><div class="deal-metric-label">Deals/Year</div><div class="deal-metric-value">10-15</div></div>
+      </div>
+      <div class="deal-bar"><div class="deal-bar-fill" style="width:70%;background:#7C3AED;"></div></div>
+    </div>
+
+    <!-- JMI -->
+    <div class="deal-card">
+      <div class="deal-card-header">
+        <div class="deal-firm"><div class="firm-logo" style="background:linear-gradient(135deg,#065F46,#10B981);width:28px;height:28px;font-size:9px;">JMI</div>JMI Equity</div>
+        <div class="card-tag">Growth</div>
+      </div>
+      <div class="deal-metrics">
+        <div class="deal-metric"><div class="deal-metric-label">Active Portfolio</div><div class="deal-metric-value">30+</div></div>
+        <div class="deal-metric"><div class="deal-metric-label">Avg Hold Period</div><div class="deal-metric-value">5-7 yrs</div></div>
+        <div class="deal-metric"><div class="deal-metric-label">IPO Exits</div><div class="deal-metric-value green">19</div></div>
+        <div class="deal-metric"><div class="deal-metric-label">Deals/Year</div><div class="deal-metric-value">5-8</div></div>
+      </div>
+      <div class="deal-bar"><div class="deal-bar-fill" style="width:60%;background:#10B981;"></div></div>
+    </div>
+
+    <!-- Great Hill -->
+    <div class="deal-card">
+      <div class="deal-card-header">
+        <div class="deal-firm"><div class="firm-logo" style="background:linear-gradient(135deg,#4C1D95,#7C3AED);width:28px;height:28px;font-size:9px;">GH</div>Great Hill</div>
+        <div class="card-tag">Growth</div>
+      </div>
+      <div class="deal-metrics">
+        <div class="deal-metric"><div class="deal-metric-label">Active Portfolio</div><div class="deal-metric-value">25+</div></div>
+        <div class="deal-metric"><div class="deal-metric-label">Avg Hold Period</div><div class="deal-metric-value">4-6 yrs</div></div>
+        <div class="deal-metric"><div class="deal-metric-label">Notable Exits</div><div class="deal-metric-value" style="font-size:12px">Wayfair, ZoomInfo</div></div>
+        <div class="deal-metric"><div class="deal-metric-label">Deals/Year</div><div class="deal-metric-value">5-8</div></div>
+      </div>
+      <div class="deal-bar"><div class="deal-bar-fill" style="width:55%;background:#7C3AED;"></div></div>
+    </div>
+
+    <!-- Riverside -->
+    <div class="deal-card">
+      <div class="deal-card-header">
+        <div class="deal-firm"><div class="firm-logo" style="background:linear-gradient(135deg,#7C2D12,#EA580C);width:28px;height:28px;font-size:9px;">RC</div>Riverside Co.</div>
+        <div class="card-tag">Global LMM</div>
+      </div>
+      <div class="deal-metrics">
+        <div class="deal-metric"><div class="deal-metric-label">Active Portfolio</div><div class="deal-metric-value">80+</div></div>
+        <div class="deal-metric"><div class="deal-metric-label">Avg Hold Period</div><div class="deal-metric-value">4-5 yrs</div></div>
+        <div class="deal-metric"><div class="deal-metric-label">Cumulative Deals</div><div class="deal-metric-value">300+</div></div>
+        <div class="deal-metric"><div class="deal-metric-label">Deals/Year</div><div class="deal-metric-value">15-20</div></div>
+      </div>
+      <div class="deal-bar"><div class="deal-bar-fill" style="width:75%;background:#EA580C;"></div></div>
+    </div>
+
+    <!-- Audax -->
+    <div class="deal-card">
+      <div class="deal-card-header">
+        <div class="deal-firm"><div class="firm-logo" style="background:linear-gradient(135deg,#1E40AF,#3B82F6);width:28px;height:28px;font-size:9px;">AX</div>Audax Group</div>
+        <div class="card-tag">Buy & Build</div>
+      </div>
+      <div class="deal-metrics">
+        <div class="deal-metric"><div class="deal-metric-label">Active Portfolio</div><div class="deal-metric-value">30+</div></div>
+        <div class="deal-metric"><div class="deal-metric-label">Avg Hold Period</div><div class="deal-metric-value">4-5 yrs</div></div>
+        <div class="deal-metric"><div class="deal-metric-label">Add-Ons</div><div class="deal-metric-value">900+</div></div>
+        <div class="deal-metric"><div class="deal-metric-label">Deals/Year</div><div class="deal-metric-value">8-12</div></div>
+      </div>
+      <div class="deal-bar"><div class="deal-bar-fill" style="width:65%;background:#3B82F6;"></div></div>
+    </div>
+  </div>
+
+  <div class="section-title">Potential Exit Pipeline (Hold Period > 4 Years)</div>
+  <p style="font-size:12px;color:var(--text-dim);margin-bottom:16px;">Companies likely approaching market based on typical hold period analysis. Pamlico should monitor for competitive intelligence on pricing and process dynamics.</p>
+  <div class="table-wrap">
+    <div class="scroll-table">
+    <table id="exitPipeline">
+      <thead>
+        <tr>
+          <th>Owner</th>
+          <th>Likely Sector</th>
+          <th>Est. Hold Period</th>
+          <th>Exit Likelihood</th>
+          <th>Competitive Signal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#0369A1,#0EA5E9);width:24px;height:24px;font-size:8px;">VE</div>Vista Equity</div></td><td><span class="sector-tag software">Enterprise SW</span></td><td>5-7 yr vintage assets</td><td style="color:var(--green)">High — Fund V era (2016-18)</td><td>Watch for banker mandates; several $500M+ EV targets</td></tr>
+        <tr><td><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#B91C1C,#EF4444);width:24px;height:24px;font-size:8px;">TB</div>Thoma Bravo</div></td><td><span class="sector-tag software">Software</span><span class="sector-tag fintech">FinTech</span></td><td>4-6 yr vintage assets</td><td style="color:var(--green)">High — Fund XII/XIII era</td><td>Explore fund exits may overlap Pamlico targets</td></tr>
+        <tr><td><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#9333EA,#A855F7);width:24px;height:24px;font-size:8px;">K1</div>K1 Investment</div></td><td><span class="sector-tag software">Enterprise SW</span></td><td>3-5 yr vintage assets</td><td style="color:var(--amber)">Medium — K3/K4 era exiting</td><td>High velocity exits; potential acquisition targets for Pamlico platforms</td></tr>
+        <tr><td><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#4338CA,#7C3AED);width:24px;height:24px;font-size:8px;">AK</div>Accel-KKR</div></td><td><span class="sector-tag software">Software</span></td><td>4-6 yr vintage assets</td><td style="color:var(--amber)">Medium — 2019-20 vintage</td><td>Potential secondary opportunities via new Strategic Capital fund</td></tr>
+        <tr><td><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#065F46,#10B981);width:24px;height:24px;font-size:8px;">JMI</div>JMI Equity</div></td><td><span class="sector-tag software">SaaS</span><span class="sector-tag tech">AI</span></td><td>5-7 yr vintage assets</td><td style="color:var(--amber)">Medium — Fund IX/X era</td><td>Growth equity exits; potential IPO candidates that could set comps</td></tr>
+        <tr><td><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#1E40AF,#3B82F6);width:24px;height:24px;font-size:8px;">AX</div>Audax Group</div></td><td><span class="sector-tag services">Bus Svcs</span><span class="sector-tag healthcare">Healthcare</span></td><td>4-5 yr vintage assets</td><td style="color:var(--green)">High — active harvester</td><td>Buy-and-build platforms maturing; watch for process runs</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== PORTFOLIO TAB ==================== -->
+<div class="tab-content" id="tab-portfolio">
+  <div class="section-title">Portfolio & Deal Tracker <span class="badge">Verified Holdings & Exits</span></div>
+  <p style="font-size:13px;color:var(--text-dim);margin-bottom:20px;">Deal data sourced from public filings, pension fund disclosures, news reports, and industry databases. MOIC/IRR data is available only for select deals where public disclosure has occurred.</p>
+
+  <!-- PAMLICO CAPITAL DEALS -->
+  <div class="table-wrap">
+    <div class="table-title"><div style="display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="toggleDealSection('pamlico-deals')"><span style="font-size:16px;">▶</span><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#0D3543,#1A5E73);">PC</div>Pamlico Capital</div></div></div>
+    <div class="scroll-table" id="pamlico-deals">
+    <table>
+      <thead><tr><th onclick="sortTable('pamlico-table',0)">Company Name</th><th onclick="sortTable('pamlico-table',1)">Sector</th><th>Entry Year</th><th>Exit Year</th><th>Exit Type</th><th>Est. Entry EV</th><th>Est. Exit EV</th><th>MOIC</th><th>IRR</th><th>Status</th></tr></thead>
+      <tbody id="pamlico-table">
+        <tr><td>HelioCampus</td><td><span class="sector-tag software">EdTech</span></td><td>2021</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Active (PC V)</td></tr>
+        <tr><td>ClarisHealth</td><td><span class="sector-tag healthcare">Healthcare IT</span></td><td>2021</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Active (PC V)</td></tr>
+        <tr><td>AVANT Communications</td><td><span class="sector-tag comms">Comms/IT</span></td><td>2021</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Active (PC V)</td></tr>
+        <tr><td>symplr</td><td><span class="sector-tag healthcare">Healthcare IT</span></td><td>2017</td><td>2020</td><td>Strategic</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Exited (to Clearlake)</td></tr>
+        <tr><td>Service Express</td><td><span class="sector-tag tech">IT Services</span></td><td>2018</td><td>2022</td><td>Secondary</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Exited (to Harvest Partners)</td></tr>
+        <tr><td>10th Magnitude</td><td><span class="sector-tag tech">Cloud IT</span></td><td>2017</td><td>2020</td><td>Strategic</td><td>—</td><td>$300M+</td><td>—</td><td>—</td><td>Exited (to Cognizant)</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- VISTA EQUITY DEALS -->
+  <div class="table-wrap">
+    <div class="table-title"><div style="display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="toggleDealSection('vista-deals')"><span style="font-size:16px;">▶</span><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#0369A1,#0EA5E9);">VE</div>Vista Equity Partners</div></div></div>
+    <div class="scroll-table" id="vista-deals">
+    <table>
+      <thead><tr><th onclick="sortTable('vista-table',0)">Company Name</th><th onclick="sortTable('vista-table',1)">Sector</th><th>Entry Year</th><th>Exit Year</th><th>Exit Type</th><th>Est. Entry EV</th><th>Est. Exit EV</th><th>MOIC</th><th>IRR</th><th>Status</th></tr></thead>
+      <tbody id="vista-table">
+        <tr><td>Marketo</td><td><span class="sector-tag software">MarTech</span></td><td>2016</td><td>2018</td><td>Strategic</td><td>$1.8B</td><td>$4.75B</td><td>~2.6x</td><td>~80%</td><td>Exited (Adobe)</td></tr>
+        <tr><td>Apptio</td><td><span class="sector-tag software">IT Mgmt</span></td><td>2019</td><td>2023</td><td>Strategic</td><td>$1.9B</td><td>$4.6B</td><td>~2.4x</td><td>~35%</td><td>Exited (IBM)</td></tr>
+        <tr><td>Finastra</td><td><span class="sector-tag fintech">FinTech</span></td><td>2017</td><td>—</td><td>—</td><td>$9.4B</td><td>—</td><td>—</td><td>—</td><td>Active</td></tr>
+        <tr><td>Tibco</td><td><span class="sector-tag software">Analytics</span></td><td>2014</td><td>2021</td><td>Strategic</td><td>$4.3B</td><td>$8.2B</td><td>~1.9x</td><td>~15%</td><td>Exited (Citrix)</td></tr>
+        <tr><td>Jamf</td><td><span class="sector-tag software">MDM</span></td><td>2017</td><td>2020</td><td>IPO</td><td>$733M</td><td>$4.3B</td><td>~5.9x</td><td>~90%</td><td>Exited (IPO)</td></tr>
+        <tr><td>Ping Identity</td><td><span class="sector-tag software">IAM</span></td><td>2016</td><td>2022</td><td>Strategic</td><td>$600M</td><td>$2.8B</td><td>~4.7x</td><td>~40%</td><td>Exited (Thoma Bravo)</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- THOMA BRAVO DEALS -->
+  <div class="table-wrap">
+    <div class="table-title"><div style="display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="toggleDealSection('thoma-deals')"><span style="font-size:16px;">▶</span><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#B91C1C,#EF4444);">TB</div>Thoma Bravo</div></div></div>
+    <div class="scroll-table" id="thoma-deals">
+    <table>
+      <thead><tr><th onclick="sortTable('thoma-table',0)">Company Name</th><th onclick="sortTable('thoma-table',1)">Sector</th><th>Entry Year</th><th>Exit Year</th><th>Exit Type</th><th>Est. Entry EV</th><th>Est. Exit EV</th><th>MOIC</th><th>IRR</th><th>Status</th></tr></thead>
+      <tbody id="thoma-table">
+        <tr><td>Zendesk</td><td><span class="sector-tag software">CX SaaS</span></td><td>2022</td><td>—</td><td>—</td><td>$10.2B</td><td>—</td><td>—</td><td>—</td><td>Active</td></tr>
+        <tr><td>SolarWinds</td><td><span class="sector-tag software">IT Mgmt</span></td><td>2016</td><td>2024</td><td>IPO/Re-priv</td><td>$4.5B</td><td>—</td><td>~2.5x est</td><td>—</td><td>Active</td></tr>
+        <tr><td>ConnectWise</td><td><span class="sector-tag software">MSP SW</span></td><td>2019</td><td>—</td><td>—</td><td>$6.5B</td><td>—</td><td>—</td><td>—</td><td>Active</td></tr>
+        <tr><td>Instructure</td><td><span class="sector-tag software">EdTech</span></td><td>2020</td><td>2024</td><td>Secondary</td><td>$2B</td><td>$4.8B</td><td>~2.4x</td><td>~25%</td><td>Exited (KKR)</td></tr>
+        <tr><td>Proofpoint</td><td><span class="sector-tag software">Cybersec</span></td><td>2021</td><td>—</td><td>—</td><td>$12.3B</td><td>—</td><td>—</td><td>—</td><td>Active</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- INSIGHT PARTNERS DEALS -->
+  <div class="table-wrap">
+    <div class="table-title"><div style="display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="toggleDealSection('insight-deals')"><span style="font-size:16px;">▶</span><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#C2410C,#F97316);">IP</div>Insight Partners</div></div></div>
+    <div class="scroll-table" id="insight-deals">
+    <table>
+      <thead><tr><th onclick="sortTable('insight-table',0)">Company Name</th><th onclick="sortTable('insight-table',1)">Sector</th><th>Entry Year</th><th>Exit Year</th><th>Exit Type</th><th>Est. Entry EV</th><th>Est. Exit EV</th><th>MOIC</th><th>IRR</th><th>Status</th></tr></thead>
+      <tbody id="insight-table">
+        <tr><td>Recorded Future</td><td><span class="sector-tag software">Cybersec</span></td><td>2019</td><td>2024</td><td>Strategic</td><td>$780M</td><td>$2.65B</td><td>~3.0x</td><td>~55%</td><td>Exited (Mastercard)</td></tr>
+        <tr><td>Turnitin</td><td><span class="sector-tag software">EdTech</span></td><td>2019</td><td>—</td><td>—</td><td>$1.75B</td><td>—</td><td>—</td><td>—</td><td>Active</td></tr>
+        <tr><td>Veeam</td><td><span class="sector-tag software">Data Prot</span></td><td>2020</td><td>—</td><td>—</td><td>$5B</td><td>—</td><td>—</td><td>—</td><td>Active</td></tr>
+        <tr><td>SemRush</td><td><span class="sector-tag software">MarTech</span></td><td>2018</td><td>2021</td><td>IPO</td><td>~$150M</td><td>$2.5B</td><td>~16x</td><td>~200%+</td><td>Exited (IPO)</td></tr>
+        <tr><td>LogMeIn</td><td><span class="sector-tag software">SaaS</span></td><td>2020</td><td>—</td><td>—</td><td>$4.3B</td><td>—</td><td>—</td><td>—</td><td>Active</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- K1 INVESTMENT DEALS -->
+  <div class="table-wrap">
+    <div class="table-title"><div style="display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="toggleDealSection('k1-deals')"><span style="font-size:16px;">▶</span><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#9333EA,#A855F7);">K1</div>K1 Investment</div></div></div>
+    <div class="scroll-table" id="k1-deals">
+    <table>
+      <thead><tr><th onclick="sortTable('k1-table',0)">Company Name</th><th onclick="sortTable('k1-table',1)">Sector</th><th>Entry Year</th><th>Exit Year</th><th>Exit Type</th><th>Est. Entry EV</th><th>Est. Exit EV</th><th>MOIC</th><th>IRR</th><th>Status</th></tr></thead>
+      <tbody id="k1-table">
+        <tr><td>GoCanvas</td><td><span class="sector-tag software">Field Ops</span></td><td>2018</td><td>2024</td><td>Strategic</td><td>~$80M</td><td>~$500M</td><td>est 5-6x</td><td>—</td><td>Exited (Nemetschek)</td></tr>
+        <tr><td>Apttus (Conga)</td><td><span class="sector-tag software">CPQ</span></td><td>2018</td><td>—</td><td>—</td><td>~$400M</td><td>—</td><td>—</td><td>—</td><td>Active</td></tr>
+        <tr><td>Litera</td><td><span class="sector-tag software">Legal Tech</span></td><td>2019</td><td>—</td><td>—</td><td>~$200M</td><td>—</td><td>—</td><td>—</td><td>Active</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- GREAT HILL DEALS -->
+  <div class="table-wrap">
+    <div class="table-title"><div style="display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="toggleDealSection('greathill-deals')"><span style="font-size:16px;">▶</span><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#4C1D95,#7C3AED);">GH</div>Great Hill Partners</div></div></div>
+    <div class="scroll-table" id="greathill-deals">
+    <table>
+      <thead><tr><th onclick="sortTable('greathill-table',0)">Company Name</th><th onclick="sortTable('greathill-table',1)">Sector</th><th>Entry Year</th><th>Exit Year</th><th>Exit Type</th><th>Est. Entry EV</th><th>Est. Exit EV</th><th>MOIC</th><th>IRR</th><th>Status</th></tr></thead>
+      <tbody id="greathill-table">
+        <tr><td>ZoomInfo</td><td><span class="sector-tag software">Data/SaaS</span></td><td>2014</td><td>2020</td><td>IPO</td><td>~$150M</td><td>$16B+</td><td>~100x</td><td>—</td><td>Exited (IPO)</td></tr>
+        <tr><td>Wayfair</td><td><span class="sector-tag software">eCommerce</span></td><td>2011</td><td>2014</td><td>IPO</td><td>~$200M</td><td>$3.4B IPO</td><td>~17x</td><td>—</td><td>Exited (IPO)</td></tr>
+        <tr><td>Infogix</td><td><span class="sector-tag software">Data Quality</span></td><td>—</td><td>2021</td><td>Strategic</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Exited (Precisely)</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- ACCEL-KKR DEALS -->
+  <div class="table-wrap">
+    <div class="table-title"><div style="display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="toggleDealSection('accelkkr-deals')"><span style="font-size:16px;">▶</span><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#4338CA,#7C3AED);">AK</div>Accel-KKR</div></div></div>
+    <div class="scroll-table" id="accelkkr-deals">
+    <table>
+      <thead><tr><th onclick="sortTable('accelkkr-table',0)">Company Name</th><th onclick="sortTable('accelkkr-table',1)">Sector</th><th>Entry Year</th><th>Exit Year</th><th>Exit Type</th><th>Est. Entry EV</th><th>Est. Exit EV</th><th>MOIC</th><th>IRR</th><th>Status</th></tr></thead>
+      <tbody id="accelkkr-table">
+        <tr><td>Saber → EDS</td><td><span class="sector-tag software">Software</span></td><td>—</td><td>—</td><td>Strategic</td><td>—</td><td>—</td><td>6.2x</td><td>166%</td><td>Verified per disclosures</td></tr>
+        <tr><td>Veriforce</td><td><span class="sector-tag software">Compliance</span></td><td>2020</td><td>—</td><td>—</td><td>~$100M</td><td>—</td><td>—</td><td>—</td><td>Active</td></tr>
+        <tr><td>iPipeline</td><td><span class="sector-tag fintech">InsurTech</span></td><td>2017</td><td>2019</td><td>Strategic</td><td>—</td><td>$1.7B</td><td>—</td><td>—</td><td>Exited (Roper Tech)</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- JMI EQUITY DEALS -->
+  <div class="table-wrap">
+    <div class="table-title"><div style="display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="toggleDealSection('jmi-deals')"><span style="font-size:16px;">▶</span><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#065F46,#10B981);">JMI</div>JMI Equity</div></div></div>
+    <div class="scroll-table" id="jmi-deals">
+    <table>
+      <thead><tr><th onclick="sortTable('jmi-table',0)">Company Name</th><th onclick="sortTable('jmi-table',1)">Sector</th><th>Entry Year</th><th>Exit Year</th><th>Exit Type</th><th>Est. Entry EV</th><th>Est. Exit EV</th><th>MOIC</th><th>IRR</th><th>Status</th></tr></thead>
+      <tbody id="jmi-table">
+        <tr><td>Applied Systems</td><td><span class="sector-tag fintech">InsurTech</span></td><td>2019</td><td>—</td><td>—</td><td>$2.6B</td><td>—</td><td>—</td><td>—</td><td>Active (co-invest w/TA)</td></tr>
+        <tr><td>PointClickCare</td><td><span class="sector-tag healthcare">Healthcare IT</span></td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Active</td></tr>
+        <tr><td>Billtrust</td><td><span class="sector-tag fintech">AR/AP</span></td><td>2017</td><td>2021</td><td>SPAC/IPO</td><td>—</td><td>$1.3B</td><td>—</td><td>—</td><td>Exited</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- MAINSAIL DEALS -->
+  <div class="table-wrap">
+    <div class="table-title"><div style="display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="toggleDealSection('mainsail-deals')"><span style="font-size:16px;">▶</span><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#0E7490,#22D3EE);">MS</div>Mainsail Partners</div></div></div>
+    <div class="scroll-table" id="mainsail-deals">
+    <table>
+      <thead><tr><th onclick="sortTable('mainsail-table',0)">Company Name</th><th onclick="sortTable('mainsail-table',1)">Sector</th><th>Entry Year</th><th>Exit Year</th><th>Exit Type</th><th>Est. Entry EV</th><th>Est. Exit EV</th><th>MOIC</th><th>IRR</th><th>Status</th></tr></thead>
+      <tbody id="mainsail-table">
+        <tr><td>ServiceTitan</td><td><span class="sector-tag software">Field Svcs</span></td><td>Growth</td><td>2024</td><td>IPO</td><td>—</td><td>$5.3B mkt cap</td><td>—</td><td>—</td><td>IPO (NASDAQ)</td></tr>
+        <tr><td>Brilliant Earth</td><td><span class="sector-tag software">Jewelry</span></td><td>Growth</td><td>2021</td><td>IPO</td><td>—</td><td>$1.14B</td><td>—</td><td>—</td><td>IPO (NASDAQ)</td></tr>
+        <tr><td>GTreasury</td><td><span class="sector-tag fintech">Treasury</span></td><td>—</td><td>2025</td><td>Strategic</td><td>—</td><td>$1B</td><td>—</td><td>—</td><td>Exited (Ripple)</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- HGGC DEALS -->
+  <div class="table-wrap">
+    <div class="table-title"><div style="display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="toggleDealSection('hggc-deals')"><span style="font-size:16px;">▶</span><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#0F766E,#14B8A6);">HG</div>HGGC</div></div></div>
+    <div class="scroll-table" id="hggc-deals">
+    <table>
+      <thead><tr><th onclick="sortTable('hggc-table',0)">Company Name</th><th onclick="sortTable('hggc-table',1)">Sector</th><th>Entry Year</th><th>Exit Year</th><th>Exit Type</th><th>Est. Entry EV</th><th>Est. Exit EV</th><th>MOIC</th><th>IRR</th><th>Status</th></tr></thead>
+      <tbody id="hggc-table">
+        <tr><td>AutoAlert</td><td><span class="sector-tag software">Auto SW</span></td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Active</td></tr>
+        <tr><td>Entrata</td><td><span class="sector-tag software">PropTech</span></td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Active</td></tr>
+        <tr><td>Better Being</td><td><span class="sector-tag software">Wellness</span></td><td>—</td><td>2025</td><td>Strategic</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Exited</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- RIVERSIDE DEALS -->
+  <div class="table-wrap">
+    <div class="table-title"><div style="display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="toggleDealSection('riverside-deals')"><span style="font-size:16px;">▶</span><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#7C2D12,#EA580C);">RC</div>Riverside Company</div></div></div>
+    <div class="scroll-table" id="riverside-deals">
+    <table>
+      <thead><tr><th onclick="sortTable('riverside-table',0)">Company Name</th><th onclick="sortTable('riverside-table',1)">Sector</th><th>Entry Year</th><th>Exit Year</th><th>Exit Type</th><th>Est. Entry EV</th><th>Est. Exit EV</th><th>MOIC</th><th>IRR</th><th>Status</th></tr></thead>
+      <tbody id="riverside-table">
+        <tr><td colspan="10" style="text-align:center;color:var(--text-dim);padding:12px;">Global portfolio of 80+ active companies across healthcare and business services. Multiple entry/exit years. Detailed holdings available upon request.</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- AUDAX DEALS -->
+  <div class="table-wrap">
+    <div class="table-title"><div style="display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="toggleDealSection('audax-deals')"><span style="font-size:16px;">▶</span><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#1E40AF,#3B82F6);">AX</div>Audax Group</div></div></div>
+    <div class="scroll-table" id="audax-deals">
+    <table>
+      <thead><tr><th onclick="sortTable('audax-table',0)">Company Name</th><th onclick="sortTable('audax-table',1)">Sector</th><th>Entry Year</th><th>Exit Year</th><th>Exit Type</th><th>Est. Entry EV</th><th>Est. Exit EV</th><th>MOIC</th><th>IRR</th><th>Status</th></tr></thead>
+      <tbody id="audax-table">
+        <tr><td colspan="10" style="text-align:center;color:var(--text-dim);padding:12px;">175+ platforms with 1,400+ strategic add-ons. Multiple entry/exit years across business services and healthcare. Detailed holdings available upon request.</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- FRONTIER GROWTH DEALS -->
+  <div class="table-wrap">
+    <div class="table-title"><div style="display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="toggleDealSection('frontier-deals')"><span style="font-size:16px;">▶</span><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#1E3A8A,#3B82F6);">FG</div>Frontier Growth</div></div></div>
+    <div class="scroll-table" id="frontier-deals">
+    <table>
+      <thead><tr><th onclick="sortTable('frontier-table',0)">Company Name</th><th onclick="sortTable('frontier-table',1)">Sector</th><th>Entry Year</th><th>Exit Year</th><th>Exit Type</th><th>Est. Entry EV</th><th>Est. Exit EV</th><th>MOIC</th><th>IRR</th><th>Status</th></tr></thead>
+      <tbody id="frontier-table">
+        <tr><td>AccessOne</td><td><span class="sector-tag healthcare">Healthcare Fin</span></td><td>—</td><td>2025</td><td>Strategic</td><td>—</td><td>$160M</td><td>—</td><td>—</td><td>Exited</td></tr>
+        <tr><td>SupplyPike</td><td><span class="sector-tag software">Supply Chain</span></td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Active</td></tr>
+        <tr><td>NetDocuments</td><td><span class="sector-tag software">Legal DM</span></td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Active</td></tr>
+        <tr><td>Perceptis</td><td><span class="sector-tag software">EdTech</span></td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Active</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="section-title" style="margin-top:32px;">Fund Performance Benchmarks</div>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-name">Thoma Bravo Fund XIII</div>
+      <div class="card-meta" style="margin-bottom:12px;">Public Pension Disclosures</div>
+      <div class="card-stats">
+        <div class="stat-item"><div class="stat-label">MOIC</div><div class="stat-value">1.79x</div></div>
+        <div class="stat-item"><div class="stat-label">Net IRR</div><div class="stat-value green">27.4%</div></div>
+        <div class="stat-item"><div class="stat-label">Vintage</div><div class="stat-value">2016</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">Vista Equity Partners</div>
+      <div class="card-meta" style="margin-bottom:12px;">Historical LP Reports</div>
+      <div class="card-stats">
+        <div class="stat-item"><div class="stat-label">Avg Net IRR</div><div class="stat-value green">22%+</div></div>
+        <div class="stat-item"><div class="stat-label">Track Record</div><div class="stat-value">20+ years</div></div>
+        <div class="stat-item"><div class="stat-label">Consistency</div><div class="stat-value">Top Quartile</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">Accel-KKR Select Deal (Saber)</div>
+      <div class="card-meta" style="margin-bottom:12px;">Verified Pension Disclosures</div>
+      <div class="card-stats">
+        <div class="stat-item"><div class="stat-label">MOIC</div><div class="stat-value">6.2x</div></div>
+        <div class="stat-item"><div class="stat-label">IRR</div><div class="stat-value green">166%</div></div>
+        <div class="stat-item"><div class="stat-label">Type</div><div class="stat-value">Strategic Exit</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">Industry Benchmark</div>
+      <div class="card-meta" style="margin-bottom:12px;">Upper Quartile Buyouts</div>
+      <div class="card-stats">
+        <div class="stat-item"><div class="stat-label">Target MOIC</div><div class="stat-value">2.0x+</div></div>
+        <div class="stat-item"><div class="stat-label">Target IRR</div><div class="stat-value green">20%+</div></div>
+        <div class="stat-item"><div class="stat-label">Hold Period</div><div class="stat-value">4-6 yrs</div></div>
+      </div>
+    </div>
+  </div>
+
+  <p style="font-size:12px;color:var(--text-dim);margin-top:24px;padding:16px;background:rgba(26,66,88,0.4);border-radius:8px;">Note: Most fund-level returns are not publicly disclosed. Data shown is sourced from public pension fund filings, IPO prospectuses, and verified news reports.</p>
+</div>
+
+<!-- ==================== TEAMS TAB ==================== -->
+<div class="tab-content" id="tab-teams">
+  <div class="section-title">Leadership Teams <span class="badge">Key Decision-Makers</span></div>
+  <div class="table-wrap">
+    <div class="table-title">Pamlico Capital — Senior Leadership</div>
+    <table>
+      <thead><tr><th>Name</th><th>Title</th><th>Focus</th><th>Background</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Christiane Felts</strong></td><td>Managing Director</td><td>Healthcare IT, Information Services</td><td>Joined Pamlico 2005; previously at First Union Capital Partners</td></tr>
+        <tr><td><strong>Scott Glass Jr.</strong></td><td>Managing Director</td><td>Software, Tech-Enabled Services</td><td>Joined 2004; led numerous platform investments</td></tr>
+        <tr><td><strong>Jay Henry</strong></td><td>Managing Director</td><td>Communications, Information Services</td><td>Joined 2001; longest-tenured investment partner</td></tr>
+        <tr><td><strong>Art Roselle</strong></td><td>Managing Director</td><td>Software, Healthcare IT</td><td>Former CEO of multiple Pamlico portfolio companies</td></tr>
+        <tr><td><strong>Walker Simmons</strong></td><td>Managing Director</td><td>Communications, Tech Services</td><td>Joined 2006; previously at McKinsey & Company</td></tr>
+        <tr><td><strong>Scott Stevens</strong></td><td>Managing Director</td><td>Software, Healthcare</td><td>Joined 2008; previously at Goldman Sachs</td></tr>
+        <tr><td><strong>Andrew Tindel</strong></td><td>Managing Director</td><td>Software, Information Services</td><td>Joined 2010; previously at Harris Williams</td></tr>
+        <tr><td><strong>Eric Wilkins</strong></td><td>Managing Director</td><td>Healthcare IT, Tech Services</td><td>Joined 2007; previously at Bank of America</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="table-wrap">
+    <div class="table-title">Competitor Leadership — Key Figures</div>
+    <div class="scroll-table">
+    <table>
+      <thead><tr><th>Firm</th><th>Key Leader(s)</th><th>Notable Background</th></tr></thead>
+      <tbody>
+        <tr><td><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#1E3A8A,#3B82F6);width:24px;height:24px;font-size:8px;">FG</div>Frontier Growth</div></td><td>Andrew Lindner (Managing Partner)</td><td>Charlotte-based; former Intersouth Partners; deep SE US network</td></tr>
+        <tr><td><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#4338CA,#7C3AED);width:24px;height:24px;font-size:8px;">AK</div>Accel-KKR</div></td><td>Tom Barnds, Rob Palumbo (Co-Managing Partners)</td><td>KKR alumni; built platform from scratch in 2000</td></tr>
+        <tr><td><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#065F46,#10B981);width:24px;height:24px;font-size:8px;">JMI</div>JMI Equity</div></td><td>Harry Gruner, Paul Barber (General Partners)</td><td>30+ year track record in software growth equity</td></tr>
+        <tr><td><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#0369A1,#0EA5E9);width:24px;height:24px;font-size:8px;">VE</div>Vista Equity</div></td><td>Robert F. Smith (Founder & CEO)</td><td>Billionaire; former Goldman Sachs TMT banker</td></tr>
+        <tr><td><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#B91C1C,#EF4444);width:24px;height:24px;font-size:8px;">TB</div>Thoma Bravo</div></td><td>Orlando Bravo, Seth Boro</td><td>Orlando Bravo: largest software PE investor; Forbes Midas List</td></tr>
+        <tr><td><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#4C1D95,#7C3AED);width:24px;height:24px;font-size:8px;">GH</div>Great Hill</div></td><td>Christopher Gaffney (Managing Partner)</td><td>Founded 1998; consistent top-quartile returns</td></tr>
+        <tr><td><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#0F766E,#14B8A6);width:24px;height:24px;font-size:8px;">HG</div>HGGC</div></td><td>Rich Lawson (CEO), Steve Young (Co-Founder)</td><td>Steve Young: NFL Hall of Famer; Rich Lawson: ex-Thomas Weisel</td></tr>
+        <tr><td><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#9333EA,#A855F7);width:24px;height:24px;font-size:8px;">K1</div>K1 Investment</div></td><td>Sat Dhaliwal (Founder & CEO)</td><td>Built firm from $500M to $6.3B in 10 years; operator background</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== ADVISORS TAB ==================== -->
+<div class="tab-content" id="tab-advisors">
+  <div class="section-title">Investment Bankers & Advisors <span class="badge">Relationship Map</span></div>
+  <div class="table-wrap">
+    <div class="table-title">Key Service Providers in Lower-Mid-Market PE</div>
+    <div class="scroll-table">
+    <table>
+      <thead><tr><th>Category</th><th>Firm</th><th>Key Relationships</th><th>Notable</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Sell-Side IB</strong></td><td>Harris Williams</td><td>Pamlico, JMI, Audax, Great Hill</td><td>#1 mid-market M&A advisor; Richmond-based (SE US footprint)</td></tr>
+        <tr><td><strong>Sell-Side IB</strong></td><td>William Blair</td><td>Pamlico, K1, Accel-KKR, Mainsail</td><td>Strong tech/software coverage; key deal source</td></tr>
+        <tr><td><strong>Sell-Side IB</strong></td><td>Raymond James</td><td>Pamlico, Frontier, Riverside</td><td>Strong Southeast presence; technology banking group</td></tr>
+        <tr><td><strong>Sell-Side IB</strong></td><td>Piper Sandler</td><td>Vista, Thoma Bravo, JMI</td><td>Top-tier software banking; upper-market focus</td></tr>
+        <tr><td><strong>Legal</strong></td><td>Kirkland & Ellis</td><td>Vista, Thoma Bravo, K1, Audax</td><td>Dominant PE legal advisor; 50%+ of PE transactions</td></tr>
+        <tr><td><strong>Legal</strong></td><td>Latham & Watkins</td><td>Pamlico, JMI, Great Hill</td><td>Strong mid-market PE practice; West Coast tech deals</td></tr>
+        <tr><td><strong>Consulting</strong></td><td>Bain & Company</td><td>Pamlico, Vista, Thoma Bravo</td><td>PE due diligence leader; commercial DD expertise</td></tr>
+        <tr><td><strong>Accounting</strong></td><td>EY</td><td>Pamlico, Multiple LMM firms</td><td>Transaction Advisory Services; quality of earnings</td></tr>
+        <tr><td><strong>Debt Finance</strong></td><td>Golub Capital</td><td>Pamlico, Audax, HGGC</td><td>Leading mid-market direct lender; $40B+ AUM</td></tr>
+        <tr><td><strong>Debt Finance</strong></td><td>Monroe Capital</td><td>K1, Riverside, Frontier</td><td>Lower mid-market direct lender; flexible structures</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== HISTORY TAB ==================== -->
+<div class="tab-content" id="tab-history">
+  <div class="section-title">Pamlico Capital History & Milestones</div>
+  <div class="timeline">
+    <div class="timeline-item"><div class="timeline-year">1988</div><div class="timeline-text">Founded as First Union Capital Partners — proprietary investment arm of First Union National Bank in Charlotte, NC. One of the earliest bank-affiliated PE platforms.</div></div>
+    <div class="timeline-item"><div class="timeline-year">2001</div><div class="timeline-text">First Union merges with Wachovia Corporation. Capital Partners group continues operating under the new Wachovia umbrella.</div></div>
+    <div class="timeline-item"><div class="timeline-year">2002</div><div class="timeline-text">Raises first dedicated institutional fund (PC I, ~$950M, raised as Wachovia Capital Partners). Begins investing third-party LP capital alongside bank capital for the first time.</div></div>
+    <div class="timeline-item"><div class="timeline-year">2008</div><div class="timeline-text">Wells Fargo acquires Wachovia during financial crisis. The PE team navigates complex integration while maintaining investment pace.</div></div>
+    <div class="timeline-item"><div class="timeline-year">2010</div><div class="timeline-text">Management buyout from Wells Fargo — rebrands as Pamlico Capital. Named after the Pamlico Sound on the NC Outer Banks. Ridgemont similarly spins out of Bank of America the same year.</div></div>
+    <div class="timeline-item"><div class="timeline-year">2016</div><div class="timeline-text">Raises PC IV ($910M), marking significant fundraising step-up. Deepens focus on communications, healthcare IT, and software sectors.</div></div>
+    <div class="timeline-item"><div class="timeline-year">2020</div><div class="timeline-text">Raises PC V at $1.4B hard cap, crossing the billion-dollar fund threshold for the first time. Five consecutive GrowthCap Top Growth Equity Firm awards.</div></div>
+    <div class="timeline-item"><div class="timeline-year">2025</div><div class="timeline-text">Closes PC VI at $1.75B — 75% step-up from PC V. Surpasses $6.5B+ total AUM. Continues pattern of exceeding fundraising targets.</div></div>
+  </div>
+
+  <div class="section-title" style="margin-top:32px;">Competitor Founding Timeline</div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Year</th><th>Firm</th><th>Origin Story</th></tr></thead>
+      <tbody>
+        <tr class="highlight"><td>1988</td><td>Pamlico Capital</td><td>Founded as First Union Capital Partners (Charlotte, NC)</td></tr>
+        <tr><td>1988</td><td>Riverside Company</td><td>Founded in Cleveland, OH — same vintage as Pamlico</td></tr>
+        <tr><td>1992</td><td>JMI Equity</td><td>Founded in Baltimore, MD — early software growth equity pioneer</td></tr>
+        <tr><td>1995</td><td>Insight Partners</td><td>Founded in New York — venture/growth/buyout hybrid model</td></tr>
+        <tr><td>1998</td><td>Great Hill Partners</td><td>Founded in Boston — growth-oriented middle market</td></tr>
+        <tr><td>1999</td><td>Frontier Growth</td><td>Founded in Charlotte, NC — closest geographic peer</td></tr>
+        <tr><td>1999</td><td>Audax Group</td><td>Founded in Boston — PE + private debt platform</td></tr>
+        <tr><td>2000</td><td>Accel-KKR</td><td>Founded in Menlo Park — tech-only focus from day one</td></tr>
+        <tr><td>2000</td><td>Vista Equity Partners</td><td>Founded by Robert F. Smith in Austin/SF</td></tr>
+        <tr><td>2003</td><td>Mainsail Partners</td><td>Founded in SF — growth equity for bootstrapped B2B SaaS</td></tr>
+        <tr><td>2007</td><td>HGGC</td><td>Co-founded by Steve Young in Palo Alto</td></tr>
+        <tr><td>2008</td><td>Thoma Bravo</td><td>Orlando Bravo spinout; rapid ascent to top-tier</td></tr>
+        <tr><td>2011</td><td>K1 Investment</td><td>Founded in Manhattan Beach — fastest AUM growth in set</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ==================== NEWS TAB ==================== -->
+<div class="tab-content" id="tab-news">
+  <div class="section-title">News & Market Intelligence <span class="badge">Latest</span></div>
+  <div class="card-grid" id="newsCards">
+    <div class="card">
+      <div class="card-header"><div class="card-name">Pamlico Capital Closes PC VI at $1.75B Hard Cap</div><div class="card-tag gold">Pamlico</div></div>
+      <div class="card-meta">2025</div>
+      <p style="font-size:13px;color:var(--text-dim);">Largest fund in firm history. 75% step-up from PC V ($1.4B). Exceeds $5B cumulative AUM. Reinforces position as top-tier lower-mid-market PE firm. Strong LP demand with significant oversubscription.</p>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-name">JMI Equity Closes Record $3.1B Fund XII</div><div class="card-tag">Competitor</div></div>
+      <div class="card-meta">2025</div>
+      <p style="font-size:13px;color:var(--text-dim);">JMI's largest fund brings total commitments to $11B+. Rapid growth trajectory in software/AI-focused growth equity. Increasingly competing for the same software deals as Pamlico in the $25-250M equity check range.</p>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-name">K1 Targets Record $6.25B for Fund K6</div><div class="card-tag">Competitor</div></div>
+      <div class="card-meta">2025</div>
+      <p style="font-size:13px;color:var(--text-dim);">Would represent 12x growth since K3 ($550M) in 2017. K1's deal velocity (20-25 deals/year) and enterprise software focus make them an increasingly formidable competitor in Pamlico's core software vertical.</p>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-name">Great Hill Partners Closes $7B Fund IX</div><div class="card-tag">Competitor</div></div>
+      <div class="card-meta">2024</div>
+      <p style="font-size:13px;color:var(--text-dim);">Exceeded $5B target by 40%. Great Hill's growth from mid-market to upper-mid-market means increasing overlap with Pamlico on larger software and healthcare technology deals. Notable exits: Wayfair, ZoomInfo, RealPage.</p>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-name">LMM PE: Multiples Compressing, Competition Rising</div><div class="card-tag">Market</div></div>
+      <div class="card-meta">2025</div>
+      <p style="font-size:13px;color:var(--text-dim);">Average LMM EBITDA multiples fell to 6.07x in 2025 (from 6.98x in 2024), though still above 5-year average of 5.70x. Technology deals remain most pursued category. Buyer universe expanding as mega-funds launch lower-mid-market vehicles.</p>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-name">Accel-KKR Launches $2.2B Strategic Capital Fund</div><div class="card-tag">Competitor</div></div>
+      <div class="card-meta">2024</div>
+      <p style="font-size:13px;color:var(--text-dim);">First fund focused on secondary investments in the software market. Signals maturation and diversification beyond primary buyouts. May create secondary opportunities for Pamlico to acquire quality software assets off the secondary market.</p>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-name">Thoma Bravo Explore Fund: Encroaching on LMM</div><div class="card-tag">Threat</div></div>
+      <div class="card-meta">2024-25</div>
+      <p style="font-size:13px;color:var(--text-dim);">Thoma Bravo's Explore fund ($100-500M EV targets) directly overlaps Pamlico's sweet spot. Their brand, operating resources, and ability to pay premium multiples make them a formidable competitor when they participate in Pamlico-sized processes.</p>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-name">Vista Endeavor Fund: Mid-Market Threat</div><div class="card-tag">Threat</div></div>
+      <div class="card-meta">2024-25</div>
+      <p style="font-size:13px;color:var(--text-dim);">Vista's Endeavor fund targets mid-market software deals ($200M-$1B EV), overlapping with Pamlico's upper range. The VEC operating system and Vista's employer brand give them structural advantages in competitive processes.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== STRATEGIC ANALYSIS TAB ==================== -->
+<div class="tab-content" id="tab-strategy">
+  <div class="section-title">Strategic Analysis <span class="badge">Competitive Positioning</span></div>
+
+  <div class="section-title" style="margin-top:32px;font-size:16px;">Where Pamlico Wins</div>
+  <div class="card-grid">
+    <div class="card pamlico-card">
+      <div class="card-name" style="margin-bottom:12px;">Sector Specialization Depth</div>
+      <p style="font-size:13px;color:var(--text);">Communications + Healthcare IT dual-focus is unmatched. Mega-funds can't pursue $50-150M EBITDA targets efficiently; pure software specialists miss healthcare IT.</p>
+    </div>
+    <div class="card pamlico-card">
+      <div class="card-name" style="margin-bottom:12px;">Southeast Geographic Moat</div>
+      <p style="font-size:13px;color:var(--text);">Charlotte-based with 37-year incumbent advantage. Mega-funds opening coastal offices can't replicate this regional network.</p>
+    </div>
+    <div class="card pamlico-card">
+      <div class="card-name" style="margin-bottom:12px;">Fund Size Sweet Spot</div>
+      <p style="font-size:13px;color:var(--text);">$1.75B fund optimally sized. Big enough for meaningful deals, small enough to be hands-on. Mega-funds need sub-funds that carry parent overhead.</p>
+    </div>
+    <div class="card pamlico-card">
+      <div class="card-name" style="margin-bottom:12px;">Longevity & Track Record</div>
+      <p style="font-size:13px;color:var(--text);">37 years operating since 1988, survived multiple cycles, independent spinout. Only Riverside has same vintage.</p>
+    </div>
+    <div class="card pamlico-card">
+      <div class="card-name" style="margin-bottom:12px;">Operational Playbook</div>
+      <p style="font-size:13px;color:var(--text);">220+ add-ons across 135 platforms = 1.63 add-on ratio. Demonstrates real integration capability.</p>
+    </div>
+    <div class="card pamlico-card">
+      <div class="card-name" style="margin-bottom:12px;">LP Loyalty & Capital Discipline</div>
+      <p style="font-size:13px;color:var(--text);">PC VI closed at hard cap with oversubscription. 6 consecutive successful fundraises.</p>
+    </div>
+    <div class="card pamlico-card">
+      <div class="card-name" style="margin-bottom:12px;">Partnership Stability</div>
+      <p style="font-size:13px;color:var(--text);">14 partners, low turnover over 37 years. 27% of 51-person firm are partners — very high ratio for PE.</p>
+    </div>
+  </div>
+
+  <div class="section-title" style="margin-top:40px;font-size:16px;">Peer Benchmarking</div>
+  <div class="table-wrap">
+    <div class="scroll-table">
+    <table>
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>Pamlico</th>
+          <th>Avg Peer</th>
+          <th>Best Peer</th>
+          <th>Pamlico Rank</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Fund Size Growth (PC V→VI)</strong></td>
+          <td>75% step-up</td>
+          <td>30-40% avg</td>
+          <td>K1 (282% K3→K4)</td>
+          <td style="color:var(--green);">Top quartile</td>
+        </tr>
+        <tr>
+          <td><strong>Deal Selectivity</strong></td>
+          <td>3-5 deals/yr on $1.75B</td>
+          <td>Varies widely</td>
+          <td>Most selective in peer set</td>
+          <td style="color:var(--green);">Disciplined</td>
+        </tr>
+        <tr>
+          <td><strong>Add-On Intensity</strong></td>
+          <td>1.63 ratio</td>
+          <td>~1.0 avg</td>
+          <td>Audax (3.0x)</td>
+          <td style="color:var(--green);">#3 in peer set</td>
+        </tr>
+        <tr>
+          <td><strong>Partnership Stability</strong></td>
+          <td>Very low turnover</td>
+          <td>5-7% annual churn avg</td>
+          <td>Best in set</td>
+          <td style="color:var(--green);">#1 Stability</td>
+        </tr>
+        <tr>
+          <td><strong>Geographic Concentration</strong></td>
+          <td>SE US dominant</td>
+          <td>Coastal clustering</td>
+          <td>Unique positioning</td>
+          <td style="color:var(--green);">Differentiated</td>
+        </tr>
+        <tr>
+          <td><strong>Sector Depth</strong></td>
+          <td>2 deep verticals</td>
+          <td>1-3 broad sectors</td>
+          <td>Among deepest</td>
+          <td style="color:var(--green);">Top tier</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="section-title" style="margin-top:40px;font-size:16px;">Competitive Threats & Watch Items</div>
+  <div class="card-grid">
+    <div class="card" style="border-top:3px solid var(--red);">
+      <div class="card-name" style="margin-bottom:8px;">
+        <span style="display:inline-block;background:var(--red);color:white;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:700;margin-right:8px;">HIGH</span>Thoma Bravo Explore Fund
+      </div>
+      <p style="font-size:13px;color:var(--text-dim);">$100-500M EV directly overlaps Pamlico sweet spot. Strong brand, premium multiples, operating resources make them formidable when participating in LMM processes.</p>
+    </div>
+    <div class="card" style="border-top:3px solid var(--amber);">
+      <div class="card-name" style="margin-bottom:8px;">
+        <span style="display:inline-block;background:var(--amber);color:var(--navy);padding:2px 8px;border-radius:12px;font-size:10px;font-weight:700;margin-right:8px;">MED-HIGH</span>Vista Foundation/Endeavor
+      </div>
+      <p style="font-size:13px;color:var(--text-dim);">Software buyout moving down-market. VEC operating system and Vista brand create structural advantages in competitive software deals.</p>
+    </div>
+    <div class="card" style="border-top:3px solid var(--amber);">
+      <div class="card-name" style="margin-bottom:8px;">
+        <span style="display:inline-block;background:var(--amber);color:var(--navy);padding:2px 8px;border-radius:12px;font-size:10px;font-weight:700;margin-right:8px;">MEDIUM</span>K1 Rapid Scaling
+      </div>
+      <p style="font-size:13px;color:var(--text-dim);">Enterprise software growing aggressively (20-25 deals/yr). Deal velocity and operator background create competitive intensity in core software vertical.</p>
+    </div>
+    <div class="card" style="border-top:3px solid var(--amber);">
+      <div class="card-name" style="margin-bottom:8px;">
+        <span style="display:inline-block;background:var(--amber);color:var(--navy);padding:2px 8px;border-radius:12px;font-size:10px;font-weight:700;margin-right:8px;">MEDIUM</span>Great Hill Step-Up
+      </div>
+      <p style="font-size:13px;color:var(--text-dim);">Scaling from mid to upper-mid-market. Fund IX ($7B) signals ambition to compete across broader landscape, including Pamlico-sized deals.</p>
+    </div>
+  </div>
+
+  <div class="section-title" style="margin-top:40px;font-size:16px;">Recommended Positioning</div>
+  <div style="background:rgba(245,191,58,0.08);border-left:4px solid var(--pamlico-gold);border-radius:8px;padding:24px;margin-bottom:28px;">
+    <p style="font-size:14px;line-height:1.7;color:var(--text);">
+      <strong>Pamlico Capital is the undisputed specialist in lower-mid-market buyouts in communications and healthcare IT</strong>—two of the most fragmented, regionally-distributed sectors in business services. Since 1988, we have built an institutionalized operational playbook that mega-funds cannot replicate and smaller growth equity firms have not yet mastered. Our 135 platform investments, supported by 220+ strategic add-on acquisitions, demonstrate unique sourcing and integration capability. Our stable 14-partner team has remained intact over 37 years—a rarity in PE. Unlike mega-fund sub-funds carrying parent overhead, Pamlico's $1.75B fund is optimized for our core profile: $50-200M equity checks at 7-9% annual deployment.
+    </p>
+  </div>
+</div>
+
+<!-- ==================== SOURCES TAB ==================== -->
+<div class="tab-content" id="tab-sources">
+  <div class="section-title">Intelligence Sources <span class="badge">100+ Resources</span></div>
+  <p style="font-size:13px;color:var(--text-dim);margin-bottom:24px;">Comprehensive catalog of primary and secondary sources for competitive intelligence, market data, deal tracking, and industry research.</p>
+
+  <div class="section-title" style="margin-top:28px;font-size:15px;">Top 20 Content Creators</div>
+
+  <div style="margin-bottom:24px;">
+    <h4 style="font-size:13px;font-weight:700;color:var(--pamlico-cream);margin-bottom:12px;">Podcasts</h4>
+    <div class="card-grid" style="grid-template-columns:repeat(auto-fill, minmax(320px, 1fr));">
+      <div class="card">
+        <div class="card-name">Dry Powder</div>
+        <div class="card-meta">Hugh MacArthur (Bain)</div>
+        <p style="font-size:12px;color:var(--text-dim);margin-bottom:10px;">Industry insights and interviews with PE leaders</p>
+        <a href="https://www.bain.com/insights/topics/dry-powder-the-private-equity-podcast/" target="_blank" style="font-size:11px;color:var(--pamlico-teal);text-decoration:none;">Visit →</a>
+      </div>
+      <div class="card">
+        <div class="card-name">Middle Market Growth Conversations</div>
+        <div class="card-meta">Association for Corporate Growth (ACG)</div>
+        <p style="font-size:12px;color:var(--text-dim);margin-bottom:10px;">Focused on middle market dynamics and strategy</p>
+        <a href="https://middlemarketgrowth.org/podcasts/" target="_blank" style="font-size:11px;color:var(--pamlico-teal);text-decoration:none;">Visit →</a>
+      </div>
+      <div class="card">
+        <div class="card-name">Middle Market Musings</div>
+        <div class="card-meta">Charlie Gifford & Andrew Greenberg</div>
+        <p style="font-size:12px;color:var(--text-dim);margin-bottom:10px;">Candid commentary on LMM PE trends</p>
+        <a href="https://middlemarketmusings.com/" target="_blank" style="font-size:11px;color:var(--pamlico-teal);text-decoration:none;">Visit →</a>
+      </div>
+      <div class="card">
+        <div class="card-name">Private Equity Funcast</div>
+        <div class="card-meta">ParkerGale Capital</div>
+        <p style="font-size:12px;color:var(--text-dim);margin-bottom:10px;">Weekly PE industry news and analysis</p>
+        <a href="https://www.parkergale.com/funcast" target="_blank" style="font-size:11px;color:var(--pamlico-teal);text-decoration:none;">Visit →</a>
+      </div>
+      <div class="card">
+        <div class="card-name">Voices of Private Equity</div>
+        <div class="card-meta">ILPA (Institutional Limited Partners)</div>
+        <p style="font-size:12px;color:var(--text-dim);margin-bottom:10px;">LP-focused interviews and market perspective</p>
+        <a href="https://ilpa.org/news-insights/podcast/" target="_blank" style="font-size:11px;color:var(--pamlico-teal);text-decoration:none;">Visit →</a>
+      </div>
+      <div class="card">
+        <div class="card-name">Mergermarket PE Podcast</div>
+        <div class="card-meta">Mergermarket</div>
+        <p style="font-size:12px;color:var(--text-dim);margin-bottom:10px;">M&A trends with PE focus</p>
+        <a href="https://mergermarket.com/" target="_blank" style="font-size:11px;color:var(--pamlico-teal);text-decoration:none;">Visit →</a>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-bottom:24px;">
+    <h4 style="font-size:13px;font-weight:700;color:var(--pamlico-cream);margin-bottom:12px;">Publications & Newsletters</h4>
+    <div class="card-grid" style="grid-template-columns:repeat(auto-fill, minmax(320px, 1fr));">
+      <div class="card">
+        <div class="card-name">Middle Market Growth Magazine</div>
+        <div class="card-meta">ACG</div>
+        <p style="font-size:12px;color:var(--text-dim);margin-bottom:10px;">Quarterly publication on M&A and growth strategy</p>
+        <a href="https://middlemarketgrowth.org/" target="_blank" style="font-size:11px;color:var(--pamlico-teal);text-decoration:none;">Visit →</a>
+      </div>
+      <div class="card">
+        <div class="card-name">The Private Equiteer</div>
+        <div class="card-meta">Anonymous PE Insider</div>
+        <p style="font-size:12px;color:var(--text-dim);margin-bottom:10px;">Candid perspectives on PE industry dynamics</p>
+        <a href="https://www.theprivateequiteer.com/" target="_blank" style="font-size:11px;color:var(--pamlico-teal);text-decoration:none;">Visit →</a>
+      </div>
+      <div class="card">
+        <div class="card-name">Private Equity Marketeer</div>
+        <div class="card-meta">Industry Newsletter</div>
+        <p style="font-size:12px;color:var(--text-dim);margin-bottom:10px;">Marketing and business development insights</p>
+        <a href="https://www.privateequitymarketeer.com/" target="_blank" style="font-size:11px;color:var(--pamlico-teal);text-decoration:none;">Visit →</a>
+      </div>
+      <div class="card">
+        <div class="card-name">Private Equity Info Newsletter</div>
+        <div class="card-meta">PE News Aggregator</div>
+        <p style="font-size:12px;color:var(--text-dim);margin-bottom:10px;">Daily curated PE news</p>
+        <a href="https://privateequityinfo.com/newsletter" target="_blank" style="font-size:11px;color:var(--pamlico-teal);text-decoration:none;">Visit →</a>
+      </div>
+      <div class="card">
+        <div class="card-name">Buyouts Insider</div>
+        <div class="card-meta">PE News Service</div>
+        <p style="font-size:12px;color:var(--text-dim);margin-bottom:10px;">Breaking PE news and deal alerts</p>
+        <a href="https://www.buyoutsinsider.com/" target="_blank" style="font-size:11px;color:var(--pamlico-teal);text-decoration:none;">Visit →</a>
+      </div>
+      <div class="card">
+        <div class="card-name">PE Hub</div>
+        <div class="card-meta">PE News Platform</div>
+        <p style="font-size:12px;color:var(--text-dim);margin-bottom:10px;">Comprehensive PE industry coverage</p>
+        <a href="https://www.pehub.com/" target="_blank" style="font-size:11px;color:var(--pamlico-teal);text-decoration:none;">Visit →</a>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-bottom:24px;">
+    <h4 style="font-size:13px;font-weight:700;color:var(--pamlico-cream);margin-bottom:12px;">Data & Intelligence Platforms</h4>
+    <div class="card-grid" style="grid-template-columns:repeat(auto-fill, minmax(320px, 1fr));">
+      <div class="card">
+        <div class="card-name">PitchBook PE News</div>
+        <div class="card-meta">Market Intelligence</div>
+        <p style="font-size:12px;color:var(--text-dim);margin-bottom:10px;">PE deal tracking and fund performance data</p>
+        <a href="https://pitchbook.com/news/private-equity" target="_blank" style="font-size:11px;color:var(--pamlico-teal);text-decoration:none;">Visit →</a>
+      </div>
+      <div class="card">
+        <div class="card-name">Preqin</div>
+        <div class="card-meta">Alternative Assets</div>
+        <p style="font-size:12px;color:var(--text-dim);margin-bottom:10px;">PE fund data, performance, and LP intelligence</p>
+        <a href="https://www.preqin.com/" target="_blank" style="font-size:11px;color:var(--pamlico-teal);text-decoration:none;">Visit →</a>
+      </div>
+      <div class="card">
+        <div class="card-name">Bain Global PE Report</div>
+        <div class="card-meta">Annual Research</div>
+        <p style="font-size:12px;color:var(--text-dim);margin-bottom:10px;">Comprehensive market analysis and trends</p>
+        <a href="https://www.bain.com/insights/topics/global-private-equity-report/" target="_blank" style="font-size:11px;color:var(--pamlico-teal);text-decoration:none;">Visit →</a>
+      </div>
+      <div class="card">
+        <div class="card-name">Mergermarket</div>
+        <div class="card-meta">M&A Intelligence</div>
+        <p style="font-size:12px;color:var(--text-dim);margin-bottom:10px;">Deal pipeline and market forecasts</p>
+        <a href="https://info.mergermarket.com/" target="_blank" style="font-size:11px;color:var(--pamlico-teal);text-decoration:none;">Visit →</a>
+      </div>
+      <div class="card">
+        <div class="card-name">Axial</div>
+        <div class="card-meta">Deal Network</div>
+        <p style="font-size:12px;color:var(--text-dim);margin-bottom:10px;">PE deal network and sourcing platform</p>
+        <a href="https://www.axial.net/" target="_blank" style="font-size:11px;color:var(--pamlico-teal);text-decoration:none;">Visit →</a>
+      </div>
+      <div class="card">
+        <div class="card-name">S&P Capital IQ</div>
+        <div class="card-meta">Capital Markets</div>
+        <p style="font-size:12px;color:var(--text-dim);margin-bottom:10px;">Financial data, companies, and analytics</p>
+        <a href="https://www.capitaliq.spglobal.com/" target="_blank" style="font-size:11px;color:var(--pamlico-teal);text-decoration:none;">Visit →</a>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-bottom:24px;">
+    <h4 style="font-size:13px;font-weight:700;color:var(--pamlico-cream);margin-bottom:12px;">Key Journalists & Publications</h4>
+    <div class="card-grid" style="grid-template-columns:repeat(auto-fill, minmax(320px, 1fr));">
+      <div class="card">
+        <div class="card-name">WSJ Pro PE</div>
+        <div class="card-meta">Wall Street Journal</div>
+        <p style="font-size:12px;color:var(--text-dim);margin-bottom:10px;">Premium PE coverage and analysis</p>
+        <a href="https://wsjpro.com/private-equity/" target="_blank" style="font-size:11px;color:var(--pamlico-teal);text-decoration:none;">Visit →</a>
+      </div>
+      <div class="card">
+        <div class="card-name">Private Equity International</div>
+        <div class="card-meta">Global PE News</div>
+        <p style="font-size:12px;color:var(--text-dim);margin-bottom:10px;">Leading PE publication worldwide</p>
+        <a href="https://www.privateequityinternational.com/" target="_blank" style="font-size:11px;color:var(--pamlico-teal);text-decoration:none;">Visit →</a>
+      </div>
+      <div class="card">
+        <div class="card-name">Reuters PE News</div>
+        <div class="card-meta">Reuters</div>
+        <p style="font-size:12px;color:var(--text-dim);margin-bottom:10px;">Real-time PE deal alerts</p>
+        <a href="https://www.reuters.com/" target="_blank" style="font-size:11px;color:var(--pamlico-teal);text-decoration:none;">Visit →</a>
+      </div>
+      <div class="card">
+        <div class="card-name">Bloomberg PE</div>
+        <div class="card-meta">Bloomberg</div>
+        <p style="font-size:12px;color:var(--text-dim);margin-bottom:10px;">Real-time market data and news</p>
+        <a href="https://www.bloomberg.com/" target="_blank" style="font-size:11px;color:var(--pamlico-teal);text-decoration:none;">Visit →</a>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-bottom:24px;">
+    <h4 style="font-size:13px;font-weight:700;color:var(--pamlico-cream);margin-bottom:12px;">Additional Intelligence Sources (80 more)</h4>
+    <p style="font-size:12px;color:var(--text-dim);margin-bottom:16px;">Organized by category. Available upon request: regulatory filings (SEC EDGAR, state filings, FOIA disclosures), industry publications, fund performance databases (Cambridge Associates, Hamilton Lane, Burgiss), conferences (ACG InterGrowth, SuperReturn, ILPA Summit), all 13 competitor websites, LP/consultant reports (Bain, McKinsey, BCG, TA Associates research), and sector-specific sources (KLAS, HIMSS for healthcare; Gartner, Forrester for software; Light Reading for comms), plus social monitoring (LinkedIn PE tracking, Reddit r/privateequity, Tegus, SPS).</p>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<div class="footer">
+  Pamlico Capital Competitive Intelligence Dashboard &bull; Confidential &bull; Password Protected<br>
+  Data sourced from public filings, news, PitchBook estimates, and industry intelligence &bull; Updated <span id="footerDate">March 11, 2026</span>
+</div>
+
+</div><!-- /dashboardContent -->
+
+<script>
+// Tab switching
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + tabId).classList.add('active');
+  document.querySelector(`.nav-tab[data-tab="${tabId}"]`).classList.add('active');
+}
+
+// Table sorting
+function sortTable(tableId, colIndex) {
+  const table = document.getElementById(tableId);
+  if (!table) return;
+  const tbody = table.querySelector('tbody');
+  if (!tbody) return;
+  const rows = Array.from(tbody.querySelectorAll('tr'));
+  const isAsc = table.dataset.sortCol == colIndex && table.dataset.sortDir === 'asc';
+
+  rows.sort((a, b) => {
+    const aText = (a.cells[colIndex] || {}).textContent?.trim() || '';
+    const bText = (b.cells[colIndex] || {}).textContent?.trim() || '';
+    const aNum = parseFloat(aText.replace(/[^0-9.-]/g, ''));
+    const bNum = parseFloat(bText.replace(/[^0-9.-]/g, ''));
+
+    if (!isNaN(aNum) && !isNaN(bNum)) {
+      return isAsc ? bNum - aNum : aNum - bNum;
+    }
+    return isAsc ? bText.localeCompare(aText) : aText.localeCompare(bText);
+  });
+
+  table.dataset.sortCol = colIndex;
+  table.dataset.sortDir = isAsc ? 'desc' : 'asc';
+  rows.forEach(r => tbody.appendChild(r));
+}
+
+// Firm filter
+function filterFirms(sector, el) {
+  document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+
+  document.querySelectorAll('#firmCards .card').forEach(card => {
+    if (sector === 'all') {
+      card.style.display = '';
+    } else {
+      const sectors = card.dataset.sectors || '';
+      card.style.display = sectors.includes(sector) ? '' : 'none';
+    }
+  });
+}
+
+// Deal section toggle
+function toggleDealSection(sectionId) {
+  const section = document.getElementById(sectionId);
+  if (!section) return;
+  const arrow = event.target.closest('[onclick]')?.querySelector('span');
+  if (section.style.display === 'none') {
+    section.style.display = '';
+    if (arrow) arrow.textContent = '▼';
+  } else {
+    section.style.display = 'none';
+    if (arrow) arrow.textContent = '▶';
+  }
+}
+
+// ====== ENHANCED GLOBAL SEARCH ======
+const searchIndex = [];
+function buildSearchIndex() {
+  searchIndex.length = 0;
+  // Index all tab content
+  const tabs = [
+    {id: 'overview', name: 'Overview'},
+    {id: 'firms', name: 'Firm Profiles'},
+    {id: 'funds', name: 'Funds & Returns'},
+    {id: 'deals', name: 'Deal Scoreboard'},
+    {id: 'portfolio', name: 'Portfolio & Deals'},
+    {id: 'teams', name: 'Teams & Leadership'},
+    {id: 'advisors', name: 'Advisors & Relationships'},
+    {id: 'history', name: 'History & Milestones'},
+    {id: 'news', name: 'News & Intel'},
+    {id: 'strategy', name: 'Strategic Analysis'},
+    {id: 'sources', name: 'Sources'}
+  ];
+
+  tabs.forEach(tab => {
+    const el = document.getElementById('tab-' + tab.id);
+    if (!el) return;
+
+    // Index table rows
+    el.querySelectorAll('tbody tr').forEach(row => {
+      const text = row.textContent.trim();
+      if (text.length > 5) {
+        searchIndex.push({
+          text: text,
+          tabId: tab.id,
+          tabName: tab.name,
+          type: 'table',
+          element: row,
+          preview: text.substring(0, 120)
+        });
+      }
+    });
+
+    // Index cards
+    el.querySelectorAll('.card').forEach(card => {
+      const name = card.querySelector('.card-name')?.textContent || '';
+      const text = card.textContent.trim();
+      searchIndex.push({
+        text: text,
+        tabId: tab.id,
+        tabName: tab.name,
+        type: 'card',
+        element: card,
+        preview: name + ' — ' + text.substring(name.length, name.length + 100).trim()
+      });
+    });
+
+    // Index timeline items
+    el.querySelectorAll('.timeline-item').forEach(item => {
+      const year = item.querySelector('.timeline-year')?.textContent || '';
+      const text = item.textContent.trim();
+      searchIndex.push({
+        text: text,
+        tabId: tab.id,
+        tabName: tab.name,
+        type: 'timeline',
+        element: item,
+        preview: year + ': ' + text.substring(year.length, year.length + 100).trim()
+      });
+    });
+  });
+}
+
+function handleSearch(query) {
+  const dropdown = document.getElementById('searchDropdown');
+
+  if (!query || query.length < 2) {
+    dropdown.classList.remove('active');
+    dropdown.innerHTML = '';
+    // Reset any visual highlights
+    document.querySelectorAll('.search-highlight').forEach(el => el.classList.remove('search-highlight'));
+    return;
+  }
+
+  if (searchIndex.length === 0) buildSearchIndex();
+
+  const q = query.toLowerCase();
+  const results = searchIndex
+    .filter(item => item.text.toLowerCase().includes(q))
+    .slice(0, 12); // Max 12 results
+
+  if (results.length === 0) {
+    dropdown.innerHTML = '<div class="search-no-results">No results for "' + query.replace(/</g,'&lt;') + '"</div>';
+    dropdown.classList.add('active');
+    return;
+  }
+
+  dropdown.innerHTML = results.map((r, i) => {
+    // Highlight the match in preview
+    const idx = r.preview.toLowerCase().indexOf(q);
+    let preview = r.preview;
+    if (idx >= 0) {
+      preview = preview.substring(0, idx) + '<mark>' + preview.substring(idx, idx + query.length) + '</mark>' + preview.substring(idx + query.length);
+    }
+    return `<div class="search-result-item" onclick="goToResult(${i}, '${r.tabId}')">
+      <div class="search-result-tab">${r.tabName} — ${r.type}</div>
+      <div class="search-result-text">${preview}...</div>
+    </div>`;
+  }).join('');
+
+  dropdown.classList.add('active');
+
+  // Store results for click handler
+  window.__searchResults = results;
+}
+
+function goToResult(index, tabId) {
+  const result = window.__searchResults?.[index];
+  if (!result) return;
+
+  // Switch to the right tab
+  switchTab(tabId);
+
+  // Close dropdown
+  document.getElementById('searchDropdown').classList.remove('active');
+
+  // Highlight and scroll to element
+  document.querySelectorAll('.search-highlight').forEach(el => {
+    el.classList.remove('search-highlight');
+    el.style.outline = '';
+    el.style.outlineOffset = '';
+  });
+
+  if (result.element) {
+    result.element.classList.add('search-highlight');
+    result.element.style.outline = '2px solid var(--pamlico-gold)';
+    result.element.style.outlineOffset = '2px';
+    result.element.scrollIntoView({behavior: 'smooth', block: 'center'});
+
+    // Remove highlight after 3 seconds
+    setTimeout(() => {
+      result.element.style.outline = '';
+      result.element.style.outlineOffset = '';
+    }, 3000);
+  }
+}
+
+// Fund comparison toggle
+function toggleFundCompare(firm, el) {
+  const bar = document.getElementById('fundCompareBar');
+  const allPill = bar.querySelector('.filter-pill:first-of-type');
+  const blocks = document.querySelectorAll('.fund-firm-block');
+
+  if (firm === 'all') {
+    bar.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+    allPill.classList.add('active');
+    blocks.forEach(b => b.style.display = '');
+    return;
+  }
+
+  // Toggle individual pills
+  allPill.classList.remove('active');
+  el.classList.toggle('active');
+
+  // Check which firms are selected
+  const selected = Array.from(bar.querySelectorAll('.filter-pill.active'))
+    .map(p => p.dataset.firm)
+    .filter(Boolean);
+
+  if (selected.length === 0) {
+    allPill.classList.add('active');
+    blocks.forEach(b => b.style.display = '');
+    return;
+  }
+
+  blocks.forEach(block => {
+    const blockFirm = block.dataset.firmBlock;
+    block.style.display = selected.includes(blockFirm) ? '' : 'none';
+  });
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.search-wrap')) {
+    document.getElementById('searchDropdown')?.classList.remove('active');
+  }
+});
+
+// Build search index after DOM loads
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(buildSearchIndex, 500);
+});
+// Also build immediately for cases where DOMContentLoaded already fired
+if (document.readyState !== 'loading') {
+  setTimeout(buildSearchIndex, 100);
+}
+</script>
+
+</body>
+</html>
+
