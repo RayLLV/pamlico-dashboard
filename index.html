@@ -143,6 +143,90 @@ body {
   font-weight: 800; font-size: 11px; flex-shrink: 0; color: white; letter-spacing: -0.5px;
 }
 
+
+/* TEAM TWISTEE SECTIONS */
+.team-twistee {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  transition: all 0.2s;
+}
+.team-twistee:hover { border-color: rgba(31,160,213,0.4); }
+.team-twistee.pamlico-twistee { border-left: 3px solid var(--pamlico-gold); }
+.team-twistee summary {
+  padding: 14px 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  list-style: none;
+  user-select: none;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+.team-twistee summary::-webkit-details-marker { display: none; }
+.team-twistee summary::before {
+  content: '\25B6';
+  font-size: 10px;
+  color: var(--pamlico-teal);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+  width: 14px;
+}
+.team-twistee[open] summary::before { transform: rotate(90deg); }
+.team-twistee .twistee-meta {
+  font-size: 11px;
+  color: var(--text-dim);
+  font-weight: 400;
+  margin-left: auto;
+}
+.team-twistee .partner-grid {
+  padding: 0 20px 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 8px;
+}
+.partner-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: rgba(9,30,42,0.5);
+  transition: background 0.15s;
+}
+.partner-row:hover { background: rgba(31,160,213,0.08); }
+.partner-row a {
+  color: var(--pamlico-teal);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 13px;
+  white-space: nowrap;
+}
+.partner-row a:hover { text-decoration: underline; color: var(--pamlico-gold); }
+.partner-row .partner-details {
+  font-size: 11px;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+.partner-row .partner-title { font-weight: 500; color: var(--text); font-size: 11px; }
+.partner-row .partner-tenure { color: var(--text-dim); font-size: 11px; }
+.partner-row .partner-focus { color: var(--pamlico-teal); font-size: 10px; font-weight: 500; }
+.team-category-header {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin: 20px 0 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+.team-category-header:first-child { margin-top: 0; }
+
 /* TABLES */
 .table-wrap {
   background: var(--card-bg); border: 1px solid var(--border);
@@ -1474,41 +1558,1011 @@ tr.highlight td { background: rgba(245,191,58,0.04); }
 
 <!-- ==================== TEAMS TAB ==================== -->
 <div class="tab-content" id="tab-teams">
-  <div class="section-title">Leadership Teams <span class="badge">Key Decision-Makers</span></div>
-  <div class="table-wrap">
-    <div class="table-title">Pamlico Capital — Senior Leadership</div>
-    <table>
-      <thead><tr><th>Name</th><th>Title</th><th>Focus</th><th>Background</th></tr></thead>
-      <tbody>
-        <tr><td><strong>Christiane Felts</strong></td><td>Managing Director</td><td>Healthcare IT, Information Services</td><td>Joined Pamlico 2005; previously at First Union Capital Partners</td></tr>
-        <tr><td><strong>Scott Glass Jr.</strong></td><td>Managing Director</td><td>Software, Tech-Enabled Services</td><td>Joined 2004; led numerous platform investments</td></tr>
-        <tr><td><strong>Jay Henry</strong></td><td>Managing Director</td><td>Communications, Information Services</td><td>Joined 2001; longest-tenured investment partner</td></tr>
-        <tr><td><strong>Art Roselle</strong></td><td>Managing Director</td><td>Software, Healthcare IT</td><td>Former CEO of multiple Pamlico portfolio companies</td></tr>
-        <tr><td><strong>Walker Simmons</strong></td><td>Managing Director</td><td>Communications, Tech Services</td><td>Joined 2006; previously at McKinsey & Company</td></tr>
-        <tr><td><strong>Scott Stevens</strong></td><td>Managing Director</td><td>Software, Healthcare</td><td>Joined 2008; previously at Goldman Sachs</td></tr>
-        <tr><td><strong>Andrew Tindel</strong></td><td>Managing Director</td><td>Software, Information Services</td><td>Joined 2010; previously at Harris Williams</td></tr>
-        <tr><td><strong>Eric Wilkins</strong></td><td>Managing Director</td><td>Healthcare IT, Tech Services</td><td>Joined 2007; previously at Bank of America</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="table-wrap">
-    <div class="table-title">Competitor Leadership — Key Figures</div>
-    <div class="scroll-table">
-    <table>
-      <thead><tr><th>Firm</th><th>Key Leader(s)</th><th>Notable Background</th></tr></thead>
-      <tbody>
-        <tr><td><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#1E3A8A,#3B82F6);width:24px;height:24px;font-size:8px;">FG</div>Frontier Growth</div></td><td>Andrew Lindner (Managing Partner)</td><td>Charlotte-based; former Intersouth Partners; deep SE US network</td></tr>
-        <tr><td><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#4338CA,#7C3AED);width:24px;height:24px;font-size:8px;">AK</div>Accel-KKR</div></td><td>Tom Barnds, Rob Palumbo (Co-Managing Partners)</td><td>KKR alumni; built platform from scratch in 2000</td></tr>
-        <tr><td><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#065F46,#10B981);width:24px;height:24px;font-size:8px;">JMI</div>JMI Equity</div></td><td>Harry Gruner, Paul Barber (General Partners)</td><td>30+ year track record in software growth equity</td></tr>
-        <tr><td><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#0369A1,#0EA5E9);width:24px;height:24px;font-size:8px;">VE</div>Vista Equity</div></td><td>Robert F. Smith (Founder & CEO)</td><td>Billionaire; former Goldman Sachs TMT banker</td></tr>
-        <tr><td><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#B91C1C,#EF4444);width:24px;height:24px;font-size:8px;">TB</div>Thoma Bravo</div></td><td>Orlando Bravo, Seth Boro</td><td>Orlando Bravo: largest software PE investor; Forbes Midas List</td></tr>
-        <tr><td><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#4C1D95,#7C3AED);width:24px;height:24px;font-size:8px;">GH</div>Great Hill</div></td><td>Christopher Gaffney (Managing Partner)</td><td>Founded 1998; consistent top-quartile returns</td></tr>
-        <tr><td><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#0F766E,#14B8A6);width:24px;height:24px;font-size:8px;">HG</div>HGGC</div></td><td>Rich Lawson (CEO), Steve Young (Co-Founder)</td><td>Steve Young: NFL Hall of Famer; Rich Lawson: ex-Thomas Weisel</td></tr>
-        <tr><td><div class="firm-name-cell"><div class="firm-logo" style="background:linear-gradient(135deg,#9333EA,#A855F7);width:24px;height:24px;font-size:8px;">K1</div>K1 Investment</div></td><td>Sat Dhaliwal (Founder & CEO)</td><td>Built firm from $500M to $6.3B in 10 years; operator background</td></tr>
-      </tbody>
-    </table>
-    </div>
-  </div>
+  <div class="section-title">Leadership Teams <span class="badge">114 Partners Across 20 Firms</span></div>
+  <p style="font-size:12px;color:var(--text-dim);margin-bottom:16px;">Click any firm to expand and view partners. Names link to LinkedIn profiles. Tenure calculated from approximate join year.</p>
+    <div class="team-category-header">Subject Firm</div>
+    <details class="team-twistee pamlico-twistee" open>
+      <summary>
+        <div class="firm-logo" style="background:linear-gradient(135deg,#0D3543,#1A5E73);width:28px;height:28px;font-size:9px;">PC</div>
+        Pamlico Capital
+        <span class="card-tag gold" style="font-size:9px;padding:2px 8px;">Subject Firm</span>
+        <span class="twistee-meta">12 partners</span>
+      </summary>
+      <div class="partner-grid">
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/eric-eubank-70062231/" target="_blank" rel="noopener">Eric Eubank</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Co-Founder & Managing Partner</span> &middot; <span class="partner-tenure">1989 (37yrs)</span><br>
+            <span class="partner-focus">Healthcare, Services, Software</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/watts-hamrick-98912069/" target="_blank" rel="noopener">Watts Hamrick</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Partner</span> &middot; <span class="partner-tenure">1988 (38yrs)</span><br>
+            <span class="partner-focus">Business & Tech Services, Communications</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/scott-perper-7a10b019/" target="_blank" rel="noopener">Scott Perper</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Co-Founder & Partner</span> &middot; <span class="partner-tenure">1989 (37yrs)</span><br>
+            <span class="partner-focus">Communications, Healthcare</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/art-roselle/" target="_blank" rel="noopener">Art Roselle</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Director</span> &middot; <span class="partner-tenure">~2005 (21yrs)</span><br>
+            <span class="partner-focus">Software, Healthcare IT</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/walker-simmons/" target="_blank" rel="noopener">Walker Simmons</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Director</span> &middot; <span class="partner-tenure">2006 (20yrs)</span><br>
+            <span class="partner-focus">Communications, Tech Services</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/scott-stevens-pamlico/" target="_blank" rel="noopener">Scott Stevens</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Director</span> &middot; <span class="partner-tenure">2008 (18yrs)</span><br>
+            <span class="partner-focus">Software, Healthcare</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/stuart-christhilf-ab0a1a33/" target="_blank" rel="noopener">Stuart Christhilf</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Partner & COO</span> &middot; <span class="partner-tenure">2003 (23yrs)</span><br>
+            <span class="partner-focus">Operations, Multiple Sectors</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/christiane-felts/" target="_blank" rel="noopener">Christiane Felts</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Director</span> &middot; <span class="partner-tenure">2005 (21yrs)</span><br>
+            <span class="partner-focus">Healthcare IT, Information Services</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/jay-henry-pamlico/" target="_blank" rel="noopener">Jay Henry</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Director</span> &middot; <span class="partner-tenure">2001 (25yrs)</span><br>
+            <span class="partner-focus">Communications, Information Services</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/scott-glass-jr/" target="_blank" rel="noopener">Scott Glass Jr.</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Director</span> &middot; <span class="partner-tenure">2004 (22yrs)</span><br>
+            <span class="partner-focus">Software, Tech-Enabled Services</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/andrew-tindel/" target="_blank" rel="noopener">Andrew Tindel</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Director</span> &middot; <span class="partner-tenure">2010 (16yrs)</span><br>
+            <span class="partner-focus">Software, Information Services</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/eric-wilkins-pamlico/" target="_blank" rel="noopener">Eric Wilkins</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Director</span> &middot; <span class="partner-tenure">2007 (19yrs)</span><br>
+            <span class="partner-focus">Healthcare IT, Tech Services</span>
+          </div>
+        </div>
+      </div>
+    </details>
+    <div class="team-category-header">Bulge Bracket / Large-Cap Trackers</div>
+    <details class="team-twistee">
+      <summary>
+        <div class="firm-logo" style="background:linear-gradient(135deg,#B91C1C,#EF4444);width:28px;height:28px;font-size:9px;">TB</div>
+        Thoma Bravo
+        <span class="card-tag " style="font-size:9px;padding:2px 8px;">Bulge Bracket</span>
+        <span class="twistee-meta">10 partners</span>
+      </summary>
+      <div class="partner-grid">
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/orlandobravo/" target="_blank" rel="noopener">Orlando Bravo</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Founder & Managing Partner</span> &middot; <span class="partner-tenure">1998 (28yrs)</span><br>
+            <span class="partner-focus">Software & Technology</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/carl-thoma-4b187211/" target="_blank" rel="noopener">Carl Thoma</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Co-Founder & Managing Partner</span> &middot; <span class="partner-tenure">1980 (46yrs)</span><br>
+            <span class="partner-focus">Software, Buy-and-Build Strategy</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/seth-boro-724ab3/" target="_blank" rel="noopener">Seth Boro</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Partner</span> &middot; <span class="partner-tenure">2005 (21yrs)</span><br>
+            <span class="partner-focus">Infrastructure Software, Cybersecurity</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/scott-crabill-19a17499/" target="_blank" rel="noopener">Scott Crabill</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Partner</span> &middot; <span class="partner-tenure">2002 (24yrs)</span><br>
+            <span class="partner-focus">Application Software, FinTech</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/holden-spaht/" target="_blank" rel="noopener">Holden Spaht</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Partner</span> &middot; <span class="partner-tenure">2005 (21yrs)</span><br>
+            <span class="partner-focus">Application Software, FinTech</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/chip-virnig-98105511/" target="_blank" rel="noopener">Chip Virnig</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Partner</span> &middot; <span class="partner-tenure">2008 (18yrs)</span><br>
+            <span class="partner-focus">Infrastructure & Cybersecurity</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/aj-rohde/" target="_blank" rel="noopener">A.J. Rohde</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Senior Partner</span> &middot; <span class="partner-tenure">~2003 (23yrs)</span><br>
+            <span class="partner-focus">Software & Technology</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/hudson-smith-thoma-bravo/" target="_blank" rel="noopener">Hudson Smith</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Partner</span> &middot; <span class="partner-tenure">2016 (10yrs)</span><br>
+            <span class="partner-focus">Software, Technology</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/andrew-almeida/" target="_blank" rel="noopener">Andrew Almeida</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Partner</span> &middot; <span class="partner-tenure">~2012 (14yrs)</span><br>
+            <span class="partner-focus">Software & Technology</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/robert-sayle/" target="_blank" rel="noopener">Robert Sayle</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Partner</span> &middot; <span class="partner-tenure">~2014 (12yrs)</span><br>
+            <span class="partner-focus">Software & Technology</span>
+          </div>
+        </div>
+      </div>
+    </details>
+    <details class="team-twistee">
+      <summary>
+        <div class="firm-logo" style="background:linear-gradient(135deg,#0369A1,#0EA5E9);width:28px;height:28px;font-size:9px;">VE</div>
+        Vista Equity Partners
+        <span class="card-tag " style="font-size:9px;padding:2px 8px;">Bulge Bracket</span>
+        <span class="twistee-meta">7 partners</span>
+      </summary>
+      <div class="partner-grid">
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/robertfredericksmith/" target="_blank" rel="noopener">Robert F. Smith</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Founder, Chairman & CEO</span> &middot; <span class="partner-tenure">2000 (26yrs)</span><br>
+            <span class="partner-focus">Enterprise Software</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/david-breach/" target="_blank" rel="noopener">David Breach</a></div>
+          <div class="partner-details">
+            <span class="partner-title">President & COO</span> &middot; <span class="partner-tenure">2014 (12yrs)</span><br>
+            <span class="partner-focus">Enterprise Software Strategy</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/michael-fosnaugh/" target="_blank" rel="noopener">Michael Fosnaugh</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Senior Managing Director</span> &middot; <span class="partner-tenure">~2005 (21yrs)</span><br>
+            <span class="partner-focus">Enterprise Software</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/david-flannery-vista/" target="_blank" rel="noopener">David Flannery</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Senior Managing Director</span> &middot; <span class="partner-tenure">~2008 (18yrs)</span><br>
+            <span class="partner-focus">Enterprise Software</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/justin-hirsch/" target="_blank" rel="noopener">Justin Hirsch</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Senior Managing Director</span> &middot; <span class="partner-tenure">~2010 (16yrs)</span><br>
+            <span class="partner-focus">Enterprise Software Strategy</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/rachel-arnold-vista/" target="_blank" rel="noopener">Rachel Arnold</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Senior Managing Director</span> &middot; <span class="partner-tenure">~2012 (14yrs)</span><br>
+            <span class="partner-focus">Enterprise Software</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/christina-lema-89411218/" target="_blank" rel="noopener">Christina Lema</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Director</span> &middot; <span class="partner-tenure">2012 (14yrs)</span><br>
+            <span class="partner-focus">Legal/Compliance, Enterprise Software</span>
+          </div>
+        </div>
+      </div>
+    </details>
+    <details class="team-twistee">
+      <summary>
+        <div class="firm-logo" style="background:linear-gradient(135deg,#D97706,#F59E0B);width:28px;height:28px;font-size:9px;">IP</div>
+        Insight Partners
+        <span class="card-tag " style="font-size:9px;padding:2px 8px;">Bulge Bracket</span>
+        <span class="twistee-meta">8 partners</span>
+      </summary>
+      <div class="partner-grid">
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/jeffhoring2009/" target="_blank" rel="noopener">Jeff Horing</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Co-Founder & Managing Director</span> &middot; <span class="partner-tenure">1995 (31yrs)</span><br>
+            <span class="partner-focus">Enterprise Software, Data, Consumer</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/djparekh/" target="_blank" rel="noopener">Deven Parekh</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Director</span> &middot; <span class="partner-tenure">2000 (26yrs)</span><br>
+            <span class="partner-focus">E-Commerce, Application Software</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/mdtriplett/" target="_blank" rel="noopener">Michael Triplett</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Director</span> &middot; <span class="partner-tenure">1998 (28yrs)</span><br>
+            <span class="partner-focus">Infrastructure & Application Software</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/lonnejaffe/" target="_blank" rel="noopener">Lonne Jaffe</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Director</span> &middot; <span class="partner-tenure">2017 (9yrs)</span><br>
+            <span class="partner-focus">Software, AI, Enterprise</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/jeff-lieberman-insight/" target="_blank" rel="noopener">Jeff Lieberman</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Director</span> &middot; <span class="partner-tenure">~1999 (27yrs)</span><br>
+            <span class="partner-focus">Enterprise Software</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/ryan-hinkle/" target="_blank" rel="noopener">Ryan Hinkle</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Director</span> &middot; <span class="partner-tenure">2003 (23yrs)</span><br>
+            <span class="partner-focus">SaaS, Internet, Infrastructure Software</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/teddie/" target="_blank" rel="noopener">Teddie Wardi</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Director</span> &middot; <span class="partner-tenure">~2015 (11yrs)</span><br>
+            <span class="partner-focus">Enterprise Software, SaaS</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/peter-segall/" target="_blank" rel="noopener">Peter Segall</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Director</span> &middot; <span class="partner-tenure">~2012 (14yrs)</span><br>
+            <span class="partner-focus">Enterprise Software</span>
+          </div>
+        </div>
+      </div>
+    </details>
+    <details class="team-twistee">
+      <summary>
+        <div class="firm-logo" style="background:linear-gradient(135deg,#1E40AF,#3B82F6);width:28px;height:28px;font-size:9px;">CL</div>
+        Clearlake Capital
+        <span class="card-tag " style="font-size:9px;padding:2px 8px;">Bulge Bracket</span>
+        <span class="twistee-meta">5 partners</span>
+      </summary>
+      <div class="partner-grid">
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/behdad-eghbali-ba645/" target="_blank" rel="noopener">Behdad Eghbali</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Co-Founder & Managing Partner</span> &middot; <span class="partner-tenure">2006 (20yrs)</span><br>
+            <span class="partner-focus">PE, Credit & Growth Equity</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/josefeliciano/" target="_blank" rel="noopener">José Feliciano</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Co-Founder & Managing Partner</span> &middot; <span class="partner-tenure">2006 (20yrs)</span><br>
+            <span class="partner-focus">PE, Credit & Growth Equity</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/fredebrahemi/" target="_blank" rel="noopener">Fred Ebrahemi</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Partner & COO</span> &middot; <span class="partner-tenure">2014 (12yrs)</span><br>
+            <span class="partner-focus">Operations, Growth Equity</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/james-pade/" target="_blank" rel="noopener">James Pade</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Partner & Managing Director</span> &middot; <span class="partner-tenure">2013 (13yrs)</span><br>
+            <span class="partner-focus">Structured Equity, Software</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/arta-tabaee/" target="_blank" rel="noopener">Arta Tabaee</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Partner & Managing Director</span> &middot; <span class="partner-tenure">2010 (16yrs)</span><br>
+            <span class="partner-focus">Industrial, Consumer, Growth Equity</span>
+          </div>
+        </div>
+      </div>
+    </details>
+    <div class="team-category-header">Core LMM Competitors</div>
+    <details class="team-twistee">
+      <summary>
+        <div class="firm-logo" style="background:linear-gradient(135deg,#1E3A8A,#3B82F6);width:28px;height:28px;font-size:9px;">FG</div>
+        Frontier Growth
+        <span class="card-tag red" style="font-size:9px;padding:2px 8px;">Closest Peer</span>
+        <span class="twistee-meta">3 partners</span>
+      </summary>
+      <div class="partner-grid">
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/richardtmaclean/" target="_blank" rel="noopener">Richard Maclean</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Co-Founder & Managing Partner</span> &middot; <span class="partner-tenure">1999 (27yrs)</span><br>
+            <span class="partner-focus">Vertical SaaS, Tech-Enabled Services</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/andrew-lindner/" target="_blank" rel="noopener">Andrew Lindner</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Co-Founder & Managing Partner</span> &middot; <span class="partner-tenure">1999 (27yrs)</span><br>
+            <span class="partner-focus">Software, Tech-Enabled Services</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/fountainchristopher/" target="_blank" rel="noopener">Christopher Fountain</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Operating Partner</span> &middot; <span class="partner-tenure">2018 (8yrs)</span><br>
+            <span class="partner-focus">Portfolio Support, SaaS Growth</span>
+          </div>
+        </div>
+      </div>
+    </details>
+    <details class="team-twistee">
+      <summary>
+        <div class="firm-logo" style="background:linear-gradient(135deg,#4338CA,#7C3AED);width:28px;height:28px;font-size:9px;">AK</div>
+        Accel-KKR
+        <span class="card-tag " style="font-size:9px;padding:2px 8px;">Core LMM</span>
+        <span class="twistee-meta">5 partners</span>
+      </summary>
+      <div class="partner-grid">
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/tom-barnds-6083525/" target="_blank" rel="noopener">Tom Barnds</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Co-Managing Partner & Co-Founder</span> &middot; <span class="partner-tenure">2000 (26yrs)</span><br>
+            <span class="partner-focus">Software & Tech-Enabled Services</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/rob-palumbo/" target="_blank" rel="noopener">Rob Palumbo</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Co-Managing Partner</span> &middot; <span class="partner-tenure">~2002 (24yrs)</span><br>
+            <span class="partner-focus">Software & Application Services</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/roy-kelvin/" target="_blank" rel="noopener">Roy Kelvin</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Director & CFO</span> &middot; <span class="partner-tenure">~2010 (16yrs)</span><br>
+            <span class="partner-focus">Financial Management & Software</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/dean-jacobson/" target="_blank" rel="noopener">Dean Jacobson</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Director</span> &middot; <span class="partner-tenure">~2010 (16yrs)</span><br>
+            <span class="partner-focus">Software & Technology</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/joseph-porten/" target="_blank" rel="noopener">Joseph Porten</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Director</span> &middot; <span class="partner-tenure">~2012 (14yrs)</span><br>
+            <span class="partner-focus">Software & Technology</span>
+          </div>
+        </div>
+      </div>
+    </details>
+    <details class="team-twistee">
+      <summary>
+        <div class="firm-logo" style="background:linear-gradient(135deg,#065F46,#10B981);width:28px;height:28px;font-size:9px;">JMI</div>
+        JMI Equity
+        <span class="card-tag " style="font-size:9px;padding:2px 8px;">Core LMM</span>
+        <span class="twistee-meta">6 partners</span>
+      </summary>
+      <div class="partner-grid">
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/harry-gruner-97b10826/" target="_blank" rel="noopener">Harry Gruner</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Co-Founder & Executive Chairman</span> &middot; <span class="partner-tenure">1992 (34yrs)</span><br>
+            <span class="partner-focus">Software, Growth Equity</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/paul-barber-538478b/" target="_blank" rel="noopener">Paul Barber</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Chairman & Co-Managing GP</span> &middot; <span class="partner-tenure">1998 (28yrs)</span><br>
+            <span class="partner-focus">Software, Enterprise</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/pearrowsmith/" target="_blank" rel="noopener">Peter Arrowsmith</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing General Partner</span> &middot; <span class="partner-tenure">~1998 (28yrs)</span><br>
+            <span class="partner-focus">Software, Infrastructure</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/bob-nye/" target="_blank" rel="noopener">Bob Nye</a></div>
+          <div class="partner-details">
+            <span class="partner-title">General Partner</span> &middot; <span class="partner-tenure">2005 (21yrs)</span><br>
+            <span class="partner-focus">Software, Enterprise Applications</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/matt-emery-jmi/" target="_blank" rel="noopener">Matt Emery</a></div>
+          <div class="partner-details">
+            <span class="partner-title">General Partner</span> &middot; <span class="partner-tenure">~2004 (22yrs)</span><br>
+            <span class="partner-focus">Software & Services</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/brian-hersman/" target="_blank" rel="noopener">Brian Hersman</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Partner</span> &middot; <span class="partner-tenure">2008 (18yrs)</span><br>
+            <span class="partner-focus">Software Companies</span>
+          </div>
+        </div>
+      </div>
+    </details>
+    <details class="team-twistee">
+      <summary>
+        <div class="firm-logo" style="background:linear-gradient(135deg,#0E4429,#22863A);width:28px;height:28px;font-size:9px;">AG</div>
+        Audax Group
+        <span class="card-tag " style="font-size:9px;padding:2px 8px;">Core LMM</span>
+        <span class="twistee-meta">3 partners</span>
+      </summary>
+      <div class="partner-grid">
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/grehnert/" target="_blank" rel="noopener">Geoffrey Rehnert</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Co-CEO & Co-Founder</span> &middot; <span class="partner-tenure">1999 (27yrs)</span><br>
+            <span class="partner-focus">Middle-Market PE</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/marc-wolpow/" target="_blank" rel="noopener">Marc Wolpow</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Co-CEO & Co-Founder</span> &middot; <span class="partner-tenure">1999 (27yrs)</span><br>
+            <span class="partner-focus">Middle-Market PE</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/daniel-green-audax/" target="_blank" rel="noopener">Daniel Green</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Director</span> &middot; <span class="partner-tenure">~2010 (16yrs)</span><br>
+            <span class="partner-focus">Strategic Capital</span>
+          </div>
+        </div>
+      </div>
+    </details>
+    <details class="team-twistee">
+      <summary>
+        <div class="firm-logo" style="background:linear-gradient(135deg,#0F766E,#14B8A6);width:28px;height:28px;font-size:9px;">HG</div>
+        HGGC
+        <span class="card-tag " style="font-size:9px;padding:2px 8px;">Core LMM</span>
+        <span class="twistee-meta">8 partners</span>
+      </summary>
+      <div class="partner-grid">
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/richlawson-hggc/" target="_blank" rel="noopener">Rich Lawson</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Co-Founder & CEO</span> &middot; <span class="partner-tenure">2007 (19yrs)</span><br>
+            <span class="partner-focus">Software, Technology, Services</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/steve-young-26131a38/" target="_blank" rel="noopener">Steve Young</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Co-Founder & Chairman</span> &middot; <span class="partner-tenure">2007 (19yrs)</span><br>
+            <span class="partner-focus">Software, Technology, Services</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/les-brown-hggc/" target="_blank" rel="noopener">Les Brown</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Director & COO</span> &middot; <span class="partner-tenure">~2010 (16yrs)</span><br>
+            <span class="partner-focus">Operations, Software</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/bill-conrad/" target="_blank" rel="noopener">Bill Conrad</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Partner</span> &middot; <span class="partner-tenure">~2012 (14yrs)</span><br>
+            <span class="partner-focus">Software, Technology</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/harv-barenz/" target="_blank" rel="noopener">Harv Barenz</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Partner</span> &middot; <span class="partner-tenure">~2012 (14yrs)</span><br>
+            <span class="partner-focus">Software, Technology</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/steve-leistner/" target="_blank" rel="noopener">Steve Leistner</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Partner</span> &middot; <span class="partner-tenure">~2013 (13yrs)</span><br>
+            <span class="partner-focus">Software, Technology</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/lance-taylor-hggc/" target="_blank" rel="noopener">Lance Taylor</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Partner</span> &middot; <span class="partner-tenure">~2014 (12yrs)</span><br>
+            <span class="partner-focus">Software, Technology</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/neil-white-hggc/" target="_blank" rel="noopener">Neil White</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Partner</span> &middot; <span class="partner-tenure">~2015 (11yrs)</span><br>
+            <span class="partner-focus">Software, Technology</span>
+          </div>
+        </div>
+      </div>
+    </details>
+    <details class="team-twistee">
+      <summary>
+        <div class="firm-logo" style="background:linear-gradient(135deg,#9333EA,#A855F7);width:28px;height:28px;font-size:9px;">K1</div>
+        K1 Investment
+        <span class="card-tag " style="font-size:9px;padding:2px 8px;">Core LMM</span>
+        <span class="twistee-meta">5 partners</span>
+      </summary>
+      <div class="partner-grid">
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/neil-malik/" target="_blank" rel="noopener">Neil Malik</a></div>
+          <div class="partner-details">
+            <span class="partner-title">CEO & President</span> &middot; <span class="partner-tenure">~2011 (15yrs)</span><br>
+            <span class="partner-focus">Enterprise Software, AI Systems</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/hasan-askari/" target="_blank" rel="noopener">Hasan Askari</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Partner</span> &middot; <span class="partner-tenure">~2015 (11yrs)</span><br>
+            <span class="partner-focus">Enterprise Software</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/taylor-beaupain/" target="_blank" rel="noopener">Taylor Beaupain</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Partner</span> &middot; <span class="partner-tenure">~2015 (11yrs)</span><br>
+            <span class="partner-focus">Enterprise Software</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/ronald-cano/" target="_blank" rel="noopener">Ronald Cano</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Partner</span> &middot; <span class="partner-tenure">~2015 (11yrs)</span><br>
+            <span class="partner-focus">Enterprise Software</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/sujit-banerjee/" target="_blank" rel="noopener">Sujit Banerjee</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Director</span> &middot; <span class="partner-tenure">~2016 (10yrs)</span><br>
+            <span class="partner-focus">Enterprise Software</span>
+          </div>
+        </div>
+      </div>
+    </details>
+    <details class="team-twistee">
+      <summary>
+        <div class="firm-logo" style="background:linear-gradient(135deg,#0C4A6E,#0284C7);width:28px;height:28px;font-size:9px;">RC</div>
+        Riverside Company
+        <span class="card-tag " style="font-size:9px;padding:2px 8px;">Core LMM</span>
+        <span class="twistee-meta">5 partners</span>
+      </summary>
+      <div class="partner-grid">
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/bela-szigethy/" target="_blank" rel="noopener">Béla Szigethy</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Co-Founder & Co-CEO</span> &middot; <span class="partner-tenure">1988 (38yrs)</span><br>
+            <span class="partner-focus">Mid-Market Software, Tech, Healthcare</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/stewart-kohl/" target="_blank" rel="noopener">Stewart Kohl</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Co-CEO</span> &middot; <span class="partner-tenure">1993 (33yrs)</span><br>
+            <span class="partner-focus">Mid-Market Software, Tech, Healthcare</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/george-cole-0016265/" target="_blank" rel="noopener">George Cole</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Partner</span> &middot; <span class="partner-tenure">2013 (13yrs)</span><br>
+            <span class="partner-focus">Strategic Capital & Growth Equity</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/peter-tsang/" target="_blank" rel="noopener">Peter Tsang</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Co-Chief Investment Officer</span> &middot; <span class="partner-tenure">~2010 (16yrs)</span><br>
+            <span class="partner-focus">Software & Tech Investment</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/brad-roberts-riverside/" target="_blank" rel="noopener">Brad Roberts</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Co-Chief Investment Officer</span> &middot; <span class="partner-tenure">~2010 (16yrs)</span><br>
+            <span class="partner-focus">Software & Tech Investment</span>
+          </div>
+        </div>
+      </div>
+    </details>
+    <details class="team-twistee">
+      <summary>
+        <div class="firm-logo" style="background:linear-gradient(135deg,#4C1D95,#7C3AED);width:28px;height:28px;font-size:9px;">GH</div>
+        Great Hill Partners
+        <span class="card-tag " style="font-size:9px;padding:2px 8px;">Core LMM</span>
+        <span class="twistee-meta">9 partners</span>
+      </summary>
+      <div class="partner-grid">
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/chrisgaffney/" target="_blank" rel="noopener">Christopher Gaffney</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Co-Founder & Managing Partner</span> &middot; <span class="partner-tenure">1998 (28yrs)</span><br>
+            <span class="partner-focus">Enterprise Software, Digital Commerce</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/michaelkumin/" target="_blank" rel="noopener">Michael Kumin</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Partner</span> &middot; <span class="partner-tenure">2002 (24yrs)</span><br>
+            <span class="partner-focus">Digital Commerce, Software</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/nicholascayer/" target="_blank" rel="noopener">Nick Cayer</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Partner</span> &middot; <span class="partner-tenure">2006 (20yrs)</span><br>
+            <span class="partner-focus">Fintech, Business Services, Software</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/chris-busby-75ab7b1/" target="_blank" rel="noopener">Chris Busby</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Partner</span> &middot; <span class="partner-tenure">2000 (26yrs)</span><br>
+            <span class="partner-focus">Software, Business Services</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/tabermark/" target="_blank" rel="noopener">Mark Taber</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Partner</span> &middot; <span class="partner-tenure">2000 (26yrs)</span><br>
+            <span class="partner-focus">Healthcare Services</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/mattvettel/" target="_blank" rel="noopener">Matt Vettel</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Partner</span> &middot; <span class="partner-tenure">~2010 (16yrs)</span><br>
+            <span class="partner-focus">Fintech, Enterprise Software</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/rafael-cofiño-426a238/" target="_blank" rel="noopener">Rafael Cofiño</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Partner</span> &middot; <span class="partner-tenure">2012 (14yrs)</span><br>
+            <span class="partner-focus">Healthcare, Software</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/drewloucks/" target="_blank" rel="noopener">Drew Loucks</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Partner</span> &middot; <span class="partner-tenure">2011 (15yrs)</span><br>
+            <span class="partner-focus">Tech-Enabled Services, Cloud</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/petergarran/" target="_blank" rel="noopener">Peter Garran</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Partner, Head of Capital Markets</span> &middot; <span class="partner-tenure">2008 (18yrs)</span><br>
+            <span class="partner-focus">Internet, Media, Software</span>
+          </div>
+        </div>
+      </div>
+    </details>
+    <div class="team-category-header">Additional LMM Competitors</div>
+    <details class="team-twistee">
+      <summary>
+        <div class="firm-logo" style="background:linear-gradient(135deg,#1D4ED8,#60A5FA);width:28px;height:28px;font-size:9px;">MS</div>
+        Mainsail Partners
+        <span class="card-tag " style="font-size:9px;padding:2px 8px;">Additional LMM</span>
+        <span class="twistee-meta">5 partners</span>
+      </summary>
+      <div class="partner-grid">
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/gavin-turner/" target="_blank" rel="noopener">Gavin Turner</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Co-Founder & Managing Partner</span> &middot; <span class="partner-tenure">2003 (23yrs)</span><br>
+            <span class="partner-focus">Vertical SaaS, Fintech, Infrastructure</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/c-jason-payne/" target="_blank" rel="noopener">Jason Payne</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Co-Founder & Senior Advisor</span> &middot; <span class="partner-tenure">2003 (23yrs)</span><br>
+            <span class="partner-focus">Bootstrapped Software Companies</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/mjwanderson/" target="_blank" rel="noopener">Michael Anderson</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Partner</span> &middot; <span class="partner-tenure">~2015 (11yrs)</span><br>
+            <span class="partner-focus">Bootstrapped Software</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/vinay-kashyap-3646173/" target="_blank" rel="noopener">Vinay Kashyap</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Partner</span> &middot; <span class="partner-tenure">~2013 (13yrs)</span><br>
+            <span class="partner-focus">Bootstrapped Software</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/taylormckinley/" target="_blank" rel="noopener">Taylor McKinley</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Partner</span> &middot; <span class="partner-tenure">~2012 (14yrs)</span><br>
+            <span class="partner-focus">Software, Fintech</span>
+          </div>
+        </div>
+      </div>
+    </details>
+    <details class="team-twistee">
+      <summary>
+        <div class="firm-logo" style="background:linear-gradient(135deg,#991B1B,#DC2626);width:28px;height:28px;font-size:9px;">LL</div>
+        LLR Partners
+        <span class="card-tag " style="font-size:9px;padding:2px 8px;">Additional LMM</span>
+        <span class="twistee-meta">3 partners</span>
+      </summary>
+      <div class="partner-grid">
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/howard-ross-a25524b7/" target="_blank" rel="noopener">Howard Ross</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Partner & Founder</span> &middot; <span class="partner-tenure">1999 (27yrs)</span><br>
+            <span class="partner-focus">Growth Capital, Multiple Sectors</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/davidstienes/" target="_blank" rel="noopener">David Stienes</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Partner</span> &middot; <span class="partner-tenure">2003 (23yrs)</span><br>
+            <span class="partner-focus">Technology, Cybersecurity, Risk</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/mitchellhollin/" target="_blank" rel="noopener">Mitchell Hollin</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Partner</span> &middot; <span class="partner-tenure">2000 (26yrs)</span><br>
+            <span class="partner-focus">Financial Services, Risk Management</span>
+          </div>
+        </div>
+      </div>
+    </details>
+    <details class="team-twistee">
+      <summary>
+        <div class="firm-logo" style="background:linear-gradient(135deg,#059669,#34D399);width:28px;height:28px;font-size:9px;">PSG</div>
+        PSG Equity
+        <span class="card-tag " style="font-size:9px;padding:2px 8px;">Additional LMM</span>
+        <span class="twistee-meta">5 partners</span>
+      </summary>
+      <div class="partner-grid">
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/mark-hastings-482b2816/" target="_blank" rel="noopener">Mark Hastings</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Co-Founder & CEO</span> &middot; <span class="partner-tenure">2014 (12yrs)</span><br>
+            <span class="partner-focus">Software, Tech-Enabled Services</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/peter-wilde-496118244/" target="_blank" rel="noopener">Peter Wilde</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Co-Founder & Chairman</span> &middot; <span class="partner-tenure">2014 (12yrs)</span><br>
+            <span class="partner-focus">Software, Growth Equity</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/rick-essex-9386214b/" target="_blank" rel="noopener">Rick Essex</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Director</span> &middot; <span class="partner-tenure">2019 (7yrs)</span><br>
+            <span class="partner-focus">Software, Tech-Enabled Services</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/dany-rammal-29680312/" target="_blank" rel="noopener">Dany Rammal</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Director, Head of Europe</span> &middot; <span class="partner-tenure">~2016 (10yrs)</span><br>
+            <span class="partner-focus">Software, TMT, Technology</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://uk.linkedin.com/in/christian-stein-a697242/" target="_blank" rel="noopener">Christian Stein</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Director</span> &middot; <span class="partner-tenure">~2018 (8yrs)</span><br>
+            <span class="partner-focus">B2B SaaS, European Tech</span>
+          </div>
+        </div>
+      </div>
+    </details>
+    <details class="team-twistee">
+      <summary>
+        <div class="firm-logo" style="background:linear-gradient(135deg,#7C2D12,#EA580C);width:28px;height:28px;font-size:9px;">SV</div>
+        Sverica Capital
+        <span class="card-tag " style="font-size:9px;padding:2px 8px;">Additional LMM</span>
+        <span class="twistee-meta">4 partners</span>
+      </summary>
+      <div class="partner-grid">
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/frankyoung/" target="_blank" rel="noopener">Frank Young</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Partner</span> &middot; <span class="partner-tenure">2007 (19yrs)</span><br>
+            <span class="partner-focus">Software, Healthcare, Business Services</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/dave-finley-sverica/" target="_blank" rel="noopener">Dave Finley</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Partner</span> &middot; <span class="partner-tenure">~2008 (18yrs)</span><br>
+            <span class="partner-focus">Business Services, Industrial, Technology</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/jordan-richards-9514b45/" target="_blank" rel="noopener">Jordan Richards</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Partner</span> &middot; <span class="partner-tenure">~2010 (16yrs)</span><br>
+            <span class="partner-focus">Business Services, Software</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/michael-dougherty-985071a4/" target="_blank" rel="noopener">Michael Dougherty</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Partner</span> &middot; <span class="partner-tenure">2012 (14yrs)</span><br>
+            <span class="partner-focus">Software, Growth Equity</span>
+          </div>
+        </div>
+      </div>
+    </details>
+    <div class="team-category-header">International Software Specialists</div>
+    <details class="team-twistee">
+      <summary>
+        <div class="firm-logo" style="background:linear-gradient(135deg,#4338CA,#818CF8);width:28px;height:28px;font-size:9px;">Hg</div>
+        Hg Capital
+        <span class="card-tag green" style="font-size:9px;padding:2px 8px;">International</span>
+        <span class="twistee-meta">4 partners</span>
+      </summary>
+      <div class="partner-grid">
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/nic-humphries/" target="_blank" rel="noopener">Nic Humphries</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Senior Partner & Executive Chairman</span> &middot; <span class="partner-tenure">2001 (25yrs)</span><br>
+            <span class="partner-focus">Software, Mission-Critical Applications</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://uk.linkedin.com/in/steven-batchelor-39795712/" target="_blank" rel="noopener">Steven Batchelor</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Partner & Co-CEO</span> &middot; <span class="partner-tenure">2003 (23yrs)</span><br>
+            <span class="partner-focus">Software, Tech-Enabled Services</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://uk.linkedin.com/in/jean-baptiste-brian-73b98670/" target="_blank" rel="noopener">Jean-Baptiste Brian</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Partner & Co-CEO</span> &middot; <span class="partner-tenure">2013 (13yrs)</span><br>
+            <span class="partner-focus">Software, Legal & Compliance, ERP</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://uk.linkedin.com/in/matthew-brockman-hg/" target="_blank" rel="noopener">Matthew Brockman</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Managing Partner & CIO</span> &middot; <span class="partner-tenure">2010 (16yrs)</span><br>
+            <span class="partner-focus">Software, Growth Equity</span>
+          </div>
+        </div>
+      </div>
+    </details>
+    <details class="team-twistee">
+      <summary>
+        <div class="firm-logo" style="background:linear-gradient(135deg,#166534,#4ADE80);width:28px;height:28px;font-size:9px;">VS</div>
+        Valsoft Corporation
+        <span class="card-tag green" style="font-size:9px;padding:2px 8px;">International</span>
+        <span class="twistee-meta">3 partners</span>
+      </summary>
+      <div class="partner-grid">
+        <div class="partner-row">
+          <div><a href="https://ca.linkedin.com/in/sam-youssef-369a86b4/" target="_blank" rel="noopener">Sam Youssef</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Founder & CEO</span> &middot; <span class="partner-tenure">2011 (15yrs)</span><br>
+            <span class="partner-focus">Vertical Market Software, Acquisitions</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://ca.linkedin.com/in/steph-manos/" target="_blank" rel="noopener">Stephane Manos</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Co-Founder</span> &middot; <span class="partner-tenure">2011 (15yrs)</span><br>
+            <span class="partner-focus">Vertical Market Software</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/mounirhilal/" target="_blank" rel="noopener">Mounir Hilal</a></div>
+          <div class="partner-details">
+            <span class="partner-title">President & COO</span> &middot; <span class="partner-tenure">2021 (5yrs)</span><br>
+            <span class="partner-focus">Operations, Software Portfolio</span>
+          </div>
+        </div>
+      </div>
+    </details>
+    <details class="team-twistee">
+      <summary>
+        <div class="firm-logo" style="background:linear-gradient(135deg,#1E3A5F,#2563EB);width:28px;height:28px;font-size:9px;">CS</div>
+        Constellation Software
+        <span class="card-tag green" style="font-size:9px;padding:2px 8px;">International</span>
+        <span class="twistee-meta">4 partners</span>
+      </summary>
+      <div class="partner-grid">
+        <div class="partner-row">
+          <div><a href="https://www.linkedin.com/in/mark-leonard/" target="_blank" rel="noopener">Mark Leonard</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Founder & Chairman</span> &middot; <span class="partner-tenure">1995 (31yrs)</span><br>
+            <span class="partner-focus">Vertical Market Software, M&A</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://ca.linkedin.com/in/markmillervolaris/" target="_blank" rel="noopener">Mark Miller</a></div>
+          <div class="partner-details">
+            <span class="partner-title">President & Board Member</span> &middot; <span class="partner-tenure">~1998 (28yrs)</span><br>
+            <span class="partner-focus">Software Operations, M&A</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://ca.linkedin.com/in/jamal-baksh-370a9b12/" target="_blank" rel="noopener">Jamal Baksh</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Chief Financial Officer</span> &middot; <span class="partner-tenure">2003 (23yrs)</span><br>
+            <span class="partner-focus">Financial Operations, Capital Allocation</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <div><a href="https://ca.linkedin.com/in/bernie-anzarouth-8501313/" target="_blank" rel="noopener">Bernard Anzarouth</a></div>
+          <div class="partner-details">
+            <span class="partner-title">Chief Investment Officer</span> &middot; <span class="partner-tenure">1995 (31yrs)</span><br>
+            <span class="partner-focus">M&A, Platform Acquisitions</span>
+          </div>
+        </div>
+      </div>
+    </details>
 </div>
 
 <!-- ==================== ADVISORS TAB ==================== -->
