@@ -1,6 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head><!-- PASSWORD GATE -->
+<script>
+(function(){
+  var k='_hc_auth';
+  if(sessionStorage.getItem(k)==='ok') return;
+  document.documentElement.style.visibility='hidden';
+  window.addEventListener('DOMContentLoaded',function(){
+    document.body.style.visibility='hidden';
+    var overlay=document.createElement('div');
+    overlay.id='_auth_overlay';
+    overlay.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;background:#1a1a2e;z-index:999999;display:flex;align-items:center;justify-content:center;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;visibility:visible';
+    overlay.innerHTML='<div style="background:#16213e;padding:40px 50px;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,0.5);text-align:center;max-width:400px;width:90%">'
+      +'<div style="font-size:28px;color:#e2e8f0;margin-bottom:8px;font-weight:600">\ud83d\udd12 Protected Site</div>'
+      +'<div style="color:#94a3b8;margin-bottom:24px;font-size:14px">Enter password to continue</div>'
+      +'<input id="_auth_pw" type="password" placeholder="Password" style="width:100%;padding:12px 16px;border:2px solid #334155;background:#0f172a;color:#e2e8f0;border-radius:8px;font-size:16px;outline:none;box-sizing:border-box;margin-bottom:16px" />'
+      +'<div id="_auth_err" style="color:#f87171;font-size:13px;margin-bottom:12px;min-height:20px"></div>'
+      +'<button id="_auth_btn" style="width:100%;padding:12px;background:#3b82f6;color:white;border:none;border-radius:8px;font-size:16px;cursor:pointer;font-weight:500">Enter</button>'
+      +'</div>';
+    document.body.appendChild(overlay);
+    var pw=document.getElementById('_auth_pw');
+    var btn=document.getElementById('_auth_btn');
+    var err=document.getElementById('_auth_err');
+    function check(){
+      if(pw.value==='g0pamlico'){
+        sessionStorage.setItem(k,'ok');
+        overlay.remove();
+        document.documentElement.style.visibility='';
+        document.body.style.visibility='';
+      } else {
+        err.textContent='Incorrect password. Try again.';
+        pw.value='';
+        pw.focus();
+      }
+    }
+    btn.addEventListener('click',check);
+    pw.addEventListener('keydown',function(e){if(e.key==='Enter')check()});
+    pw.focus();
+  });
+})();
+</script>
+<!-- END PASSWORD GATE -->
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pamlico Capital — Competitive Intelligence Dashboard</title>
